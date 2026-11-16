@@ -1,17 +1,27 @@
 #include <stdio.h>
 
 #include "la_matrix.h"
+#include "la_arithmetic.h"
 
 int main(int argc, char** argv) {
-    float values[9] = { 1, 0, 0, 0, 1, 0, 0, 0, 1 };
-    Matrix a = Matrix_New(3, 3, values);
+    Matrix a = Matrix_New(2, 3, (float[6]) {
+        2, 3, 4, 
+        1, 0, 0
+    });
+    Matrix_Print(&a);
 
-    for (int row = 0; row < a.rows; row++) {
-        for (int col = 0; col < a.cols; col++) {
-            printf("%.2f ", Matrix_GetCell(&a, row, col));
-        }
-        printf("\n");
-    }
+    Matrix b = Matrix_New(3, 2, (float[6]) {
+        0, 1000, 
+        1,  100, 
+        0,   10
+    });
+    Matrix_Print(&b);
+
+    Matrix c = Matrix_Multiply(a, b);
+    Matrix_Print(&c);
+
+    Matrix d = Matrix_AddScalar(a, 5);
+    Matrix_Print(&d);
 
     return 0;
 }
