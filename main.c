@@ -1,9 +1,6 @@
-#include <stdbool.h>
-#include <stdint.h>
 #include <stdio.h>
-#include <stdlib.h>
 
-
+#include "la_matrix.h"
 
 int main(int argc, char** argv) {
     float values[9] = { 1, 0, 0, 0, 1, 0, 0, 0, 1 };
