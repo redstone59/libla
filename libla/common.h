@@ -7,7 +7,7 @@
 #   define not_implemented assert(0 && "Function not implemented")
 #else
 #   define panic_if(predicate, msg)
-#   define not_implemented
+#   define not_implemented exit(1)
 #endif
 
 #endif // LA_COMMON_H_

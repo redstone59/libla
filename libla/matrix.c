@@ -5,7 +5,7 @@
 #include "common.h"
 
 static float FullMatrix_GetAtIndex(Matrix *self, uint64_t index) {
-    return self->cells[index];
+    return self->cells.asVec[index];
 }
 
 static float FullMatrix_GetCell(Matrix *self, uint64_t row, uint64_t col) {
@@ -13,7 +13,7 @@ static float FullMatrix_GetCell(Matrix *self, uint64_t row, uint64_t col) {
 }
 
 static void FullMatrix_SetIndex(Matrix *self, uint64_t index, float value) {
-    self->cells[index] = value;
+    self->cells.asVec[index] = value;
 }
 
 static void FullMatrix_SetCell(Matrix *self, uint64_t row, uint64_t col, float value) {
@@ -24,8 +24,9 @@ Matrix Matrix_New(uint64_t rows, uint64_t cols, float* cells) {
     return (Matrix) {
         .rows = rows,
         .cols = cols,
+        .count = rows * cols,
         .kind = LA_MATKIND_FULL,
-        .cells = cells,
+        .cells.asVec = cells,
 
         .methods = {
             .GetAtIndex = FullMatrix_GetAtIndex,
@@ -37,12 +38,12 @@ Matrix Matrix_New(uint64_t rows, uint64_t cols, float* cells) {
 }
 
 void Matrix_Destroy(Matrix* self) {
-    if (self->cells == NULL) {
+    if (self->cells.asVec == NULL) {
         return;
     }
 
-    free(self->cells);
-    self->cells = NULL;
+    free(self->cells.asVec);
+    self->cells.asVec = NULL;
 }
 
 float Matrix_GetAtIndex(Matrix *self, uint64_t index) {
@@ -51,7 +52,7 @@ float Matrix_GetAtIndex(Matrix *self, uint64_t index) {
 }
 
 float Matrix_GetCell(Matrix *self, uint64_t row, uint64_t col) {
-    panic_if(self->cells == NULL,          "Matrix has not been initialised!");
+    panic_if(self->cells.asVec == NULL,          "Matrix has not been initialised!");
     panic_if(row < 0 || row >= self->rows, "Attempted to index row outside of matrix bounds");
     panic_if(col < 0 || col >= self->cols, "Attempted to index column outside of matrix bounds");
     
@@ -64,7 +65,7 @@ void Matrix_SetIndex(Matrix *self, uint64_t index, float value) {
 }
 
 void Matrix_SetCell(Matrix *self, uint64_t row, uint64_t col, float value) {
-    panic_if(self->cells == NULL,          "Matrix has not been initialised!");
+    panic_if(self->cells.asVec == NULL,          "Matrix has not been initialised!");
     panic_if(row < 0 || row >= self->rows, "Attempted to index row outside of matrix bounds");
     panic_if(col < 0 || col >= self->cols, "Attempted to index column outside of matrix bounds");
     

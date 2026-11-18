@@ -1,7 +1,7 @@
 #include "full_matrix.h"
 
 static float FullMatrix_GetAtIndex(Matrix *self, uint64_t index) {
-    return self->cells[index];
+    return self->cells.asVec[index];
 }
 
 static float FullMatrix_GetCell(Matrix *self, uint64_t row, uint64_t col) {
@@ -9,7 +9,7 @@ static float FullMatrix_GetCell(Matrix *self, uint64_t row, uint64_t col) {
 }
 
 static void FullMatrix_SetIndex(Matrix *self, uint64_t index, float value) {
-    self->cells[index] = value;
+    self->cells.asVec[index] = value;
 }
 
 static void FullMatrix_SetCell(Matrix *self, uint64_t row, uint64_t col, float value) {
@@ -20,8 +20,9 @@ Matrix FullMatrix_New(uint64_t rows, uint64_t cols, float* cells) {
     return (Matrix){
         .rows = rows,
         .cols = cols,
+        .count = rows * cols,
         .kind = LA_MATKIND_FULL,
-        .cells = cells,
+        .cells.asVec = cells,
 
         .methods = {
             .GetAtIndex = FullMatrix_GetAtIndex,

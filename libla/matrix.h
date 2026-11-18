@@ -26,9 +26,14 @@ typedef struct MatrixVTable {
 struct Matrix {
     uint64_t rows;
     uint64_t cols;
+    uint64_t count;
+
     MatrixKind kind;
-    
-    float *cells;
+
+    union {
+        float *asVec;
+        float **asArrays;
+    } cells;
 
     MatrixVTable methods;
 };
