@@ -39,19 +39,19 @@ void Matrix_Destroy(Matrix* self);
 
 float Matrix_GetAtIndex(Matrix *self, uint64_t index);
 float Matrix_GetCell(Matrix *self, uint64_t row, uint64_t col);
-float Matrix_SetIndex(Matrix *self, uint64_t index, float value);
-float Matrix_SetCell(Matrix *self, uint64_t row, uint64_t col, float value);
+void Matrix_SetIndex(Matrix *self, uint64_t index, float value);
+void Matrix_SetCell(Matrix *self, uint64_t row, uint64_t col, float value);
 
 Matrix Matrix_GetRow(Matrix *self, uint64_t row);
 Matrix Matrix_GetCol(Matrix *self, uint64_t col);
-Matrix Matrix_SetRow(Matrix *self, uint64_t row, Matrix values);
-Matrix Matrix_SetCol(Matrix *self, uint64_t col, Matrix values);
+void Matrix_SetRow(Matrix *self, uint64_t row, Matrix values);
+void Matrix_SetCol(Matrix *self, uint64_t col, Matrix values);
 
-Matrix Matrix_SwapRows(Matrix *self, uint64_t rowA, uint64_t rowB);
-Matrix Matrix_SwapCols(Matrix *self, uint64_t, uint64_t);
-Matrix Matrix_MultiplyRow(Matrix *self, uint64_t row, float multiplier);
+void Matrix_SwapRows(Matrix *self, uint64_t rowA, uint64_t rowB);
+void Matrix_SwapCols(Matrix *self, uint64_t, uint64_t);
+void Matrix_MultiplyRow(Matrix *self, uint64_t row, float multiplier);
 /** `rowA` = `rowA` + `multiplier` * `rowB` */
-Matrix Matrix_AddMultipleOfRow(Matrix *self, uint64_t rowA, uint64_t rowB, float multiplier);
+void Matrix_AddMultipleOfRow(Matrix *self, uint64_t rowA, uint64_t rowB, float multiplier);
 
 uint64_t Matrix_CellToIndex(Matrix* self, uint64_t row, uint64_t col);
 void Matrix_Print(Matrix* self);

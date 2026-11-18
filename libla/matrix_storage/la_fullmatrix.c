@@ -15,11 +15,11 @@ static float FullMatrix_GetCell(Matrix *self, uint64_t row, uint64_t col) {
     return FullMatrix_GetAtIndex(self, Matrix_CellToIndex(self, row, col));
 }
 
-static float FullMatrix_SetIndex(Matrix *self, uint64_t index, float value) {
+static void FullMatrix_SetIndex(Matrix *self, uint64_t index, float value) {
     self->cells[index] = value;
 }
 
-static float FullMatrix_SetCell(Matrix *self, uint64_t row, uint64_t col, float value) {
+static void FullMatrix_SetCell(Matrix *self, uint64_t row, uint64_t col, float value) {
     FullMatrix_SetIndex(self, Matrix_CellToIndex(self, row, col), value);
 }
 
