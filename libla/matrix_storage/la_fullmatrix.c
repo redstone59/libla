@@ -1,17 +1,10 @@
 #include "la_fullmatrix.h"
 
-#include <stdlib.h>
-#include "../la_common.h"
-
 static float FullMatrix_GetAtIndex(Matrix *self, uint64_t index) {
     return self->cells[index];
 }
 
 static float FullMatrix_GetCell(Matrix *self, uint64_t row, uint64_t col) {
-    panic_if(self->cells == NULL,          "Matrix has not been initialised!");
-    panic_if(row < 0 || row >= self->rows, "Attempted to index row outside of matrix bounds");
-    panic_if(col < 0 || col >= self->cols, "Attempted to index column outside of matrix bounds");
-
     return FullMatrix_GetAtIndex(self, Matrix_CellToIndex(self, row, col));
 }
 

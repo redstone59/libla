@@ -4,6 +4,22 @@
 #include <stdlib.h>
 #include "la_common.h"
 
+static float FullMatrix_GetAtIndex(Matrix *self, uint64_t index) {
+    return self->cells[index];
+}
+
+static float FullMatrix_GetCell(Matrix *self, uint64_t row, uint64_t col) {
+    return FullMatrix_GetAtIndex(self, Matrix_CellToIndex(self, row, col));
+}
+
+static void FullMatrix_SetIndex(Matrix *self, uint64_t index, float value) {
+    self->cells[index] = value;
+}
+
+static void FullMatrix_SetCell(Matrix *self, uint64_t row, uint64_t col, float value) {
+    FullMatrix_SetIndex(self, Matrix_CellToIndex(self, row, col), value);
+}
+
 Matrix Matrix_New(uint64_t rows, uint64_t cols, float* cells) {
     return (Matrix) {
         .rows = rows,
@@ -11,7 +27,12 @@ Matrix Matrix_New(uint64_t rows, uint64_t cols, float* cells) {
         .kind = LA_MATKIND_FULL,
         .cells = cells,
 
-        .methods = {0}
+        .methods = {
+            .GetAtIndex = FullMatrix_GetAtIndex,
+            .GetCell = FullMatrix_GetCell,
+            .SetIndex = FullMatrix_SetIndex,
+            .SetCell = FullMatrix_SetCell
+        }
     };
 }
 
@@ -25,18 +46,28 @@ void Matrix_Destroy(Matrix* self) {
 }
 
 float Matrix_GetAtIndex(Matrix *self, uint64_t index) {
+    panic_if(index < 0 || index >= self->rows * self->cols, "Attempted to index outside the bounds of the matrix.");
     self->methods.GetAtIndex(self, index);
 }
 
 float Matrix_GetCell(Matrix *self, uint64_t row, uint64_t col) {
+    panic_if(self->cells == NULL,          "Matrix has not been initialised!");
+    panic_if(row < 0 || row >= self->rows, "Attempted to index row outside of matrix bounds");
+    panic_if(col < 0 || col >= self->cols, "Attempted to index column outside of matrix bounds");
+    
     self->methods.GetCell(self, row, col);
 }
 
 void Matrix_SetIndex(Matrix *self, uint64_t index, float value) {
+    panic_if(index < 0 || index >= self->rows * self->cols, "Attempted to index outside the bounds of the matrix.");
     self->methods.SetIndex(self, index, value);
 }
 
 void Matrix_SetCell(Matrix *self, uint64_t row, uint64_t col, float value) {
+    panic_if(self->cells == NULL,          "Matrix has not been initialised!");
+    panic_if(row < 0 || row >= self->rows, "Attempted to index row outside of matrix bounds");
+    panic_if(col < 0 || col >= self->cols, "Attempted to index column outside of matrix bounds");
+    
     self->methods.SetCell(self, row, col, value);
 }
 

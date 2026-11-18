@@ -1,8 +1,5 @@
 #include "la_scalarmatrix.h"
 
-#include <stdlib.h>
-#include "../la_common.h"
-
 static float ScalarMatrix_GetAtIndex(Matrix *self, uint64_t index) {
     return *self->cells;
 }
