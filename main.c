@@ -10,13 +10,7 @@ int main(int argc, char** argv) {
     });
     Matrix_Print(&a);
 
-    Matrix b = Matrix_New(2, 3, (float[6]) {
-        5, 2, 2,
-        8, 1, 8
-    });
-    Matrix_Print(&b);
-
-    Matrix c = Matrix_MultiplyScalar(a, 5);
+    Matrix c = Matrix_Multiply(Matrix_Transpose(a), a);
     Matrix_Print(&c);
     
     return 0;

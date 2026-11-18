@@ -13,6 +13,6 @@ Matrix Matrix_MultiplyScalar(Matrix a, float scalar);
 
 Matrix Matrix_Inverse(Matrix self);
 float Matrix_Det(Matrix self);
-Matrix Matrix_Tranpose(Matrix self);
+Matrix Matrix_Transpose(Matrix self);
 
 #endif // LA_ARITHMETIC_H_

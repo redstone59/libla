@@ -61,10 +61,12 @@ Matrix Matrix_MultiplyScalar(Matrix a, float scalar) {
     size_t numElements = a.rows * a.cols;
     float* elements = malloc(numElements * sizeof(float));
     
+    // Only loop non-zero elements (if sparse storage)
     for (int i = 0; i < numElements; i++) {
         elements[i] = Matrix_GetAtIndex(&a, i) * scalar;
     }
 
+    // Return same type of matrix back instead of full storage matrix.
     return Matrix_New(a.rows, a.cols, elements);
 }
 
@@ -76,6 +78,20 @@ float Matrix_Det(Matrix self) {
     not_implemented;
 }
 
-Matrix Matrix_Tranpose(Matrix self) {
-    not_implemented;
+Matrix Matrix_Transpose(Matrix a) {
+    size_t numElements = a.rows * a.cols;
+    float* elements = malloc(numElements * sizeof(float));
+    Matrix transposed = Matrix_New(a.cols, a.rows, elements);
+
+    for (uint64_t row = 0; row < a.rows; row++) {
+        for (uint64_t col = 0; col < a.cols; col++) {
+            Matrix_SetCell(
+                &transposed, 
+                col, row, 
+                Matrix_GetCell(&a, row, col)
+            );
+        }
+    }
+
+    return transposed;
 }
