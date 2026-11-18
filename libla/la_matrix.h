@@ -19,8 +19,8 @@ typedef enum MatrixKind {
 typedef struct MatrixVTable {
     float (*GetAtIndex)(Matrix *self, uint64_t index);
     float (*GetCell)(Matrix *self, uint64_t row, uint64_t col);
-    float (*SetIndex)(Matrix *self, uint64_t index, float value);
-    float (*SetCell)(Matrix *self, uint64_t row, uint64_t col, float value);
+    void (*SetIndex)(Matrix *self, uint64_t index, float value);
+    void (*SetCell)(Matrix *self, uint64_t row, uint64_t col, float value);
 } MatrixVTable;
 
 struct Matrix {

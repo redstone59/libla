@@ -3,6 +3,6 @@
 
 #include "../la_matrix.h"
 
-Matrix ScalarMatrix_New(uint64_t rows, uint64_t cols, float value);
+Matrix ScalarMatrix_New(uint64_t rows, uint64_t cols, float *value);
 
 #endif // LA_SCALARMATRIX_H_

@@ -47,7 +47,7 @@ void Matrix_Destroy(Matrix* self) {
 
 float Matrix_GetAtIndex(Matrix *self, uint64_t index) {
     panic_if(index < 0 || index >= self->rows * self->cols, "Attempted to index outside the bounds of the matrix.");
-    self->methods.GetAtIndex(self, index);
+    return self->methods.GetAtIndex(self, index);
 }
 
 float Matrix_GetCell(Matrix *self, uint64_t row, uint64_t col) {
@@ -55,7 +55,7 @@ float Matrix_GetCell(Matrix *self, uint64_t row, uint64_t col) {
     panic_if(row < 0 || row >= self->rows, "Attempted to index row outside of matrix bounds");
     panic_if(col < 0 || col >= self->cols, "Attempted to index column outside of matrix bounds");
     
-    self->methods.GetCell(self, row, col);
+    return self->methods.GetCell(self, row, col);
 }
 
 void Matrix_SetIndex(Matrix *self, uint64_t index, float value) {
@@ -111,7 +111,7 @@ void Matrix_MultiplyRow(Matrix *self, uint64_t row, float multiplier) {
     not_implemented;
 }
 
-Matrix Matrix_AddMultipleOfRow(Matrix *self, uint64_t rowA, uint64_t rowB, float multiplier) {
+void Matrix_AddMultipleOfRow(Matrix *self, uint64_t rowA, uint64_t rowB, float multiplier) {
     not_implemented;
 }
 

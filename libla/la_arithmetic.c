@@ -3,6 +3,8 @@
 #include "la_common.h"
 #include <stdlib.h>
 
+#include "./matrix_storage/la_scalarmatrix.h"
+
 Matrix Matrix_Add(Matrix a, Matrix b) {
     assert(a.rows == b.rows && a.cols == b.cols);
 
@@ -16,8 +18,7 @@ Matrix Matrix_Add(Matrix a, Matrix b) {
 }
 
 Matrix Matrix_Sub(Matrix a, Matrix b) {
-    not_implemented;
-    // return Matrix_Add(a, Matrix_MultiplyScalar(b, -1f));
+    return Matrix_Add(a, Matrix_MultiplyScalar(b, -1));
 }
 
 static float _Matrix_GetProductCell(Matrix a, Matrix b, int row, int col) {
@@ -34,9 +35,10 @@ static float _Matrix_GetProductCell(Matrix a, Matrix b, int row, int col) {
 Matrix Matrix_Multiply(Matrix a, Matrix b) {
     assert(a.cols == b.rows);
 
-    int size = a.rows * b.cols;
-    float *elements = malloc(size * sizeof(float));
+    size_t numElements = a.rows * b.cols;
+    float *elements = malloc(numElements * sizeof(float));
 
+    // "schoolyard" method of multiplying matrices (O(n^3))
     for (int row = 0; row < a.rows; row++) {
         for (int col = 0; col < b.cols; col++) {
             int index = row * b.cols + col;
@@ -48,11 +50,7 @@ Matrix Matrix_Multiply(Matrix a, Matrix b) {
 }
 
 Matrix Matrix_AddScalar(Matrix a, float scalar) {
-    return Matrix_Add(a, (Matrix) {
-        a.rows, a.cols,
-        LA_MATKIND_SCALAR,
-        &scalar
-    });
+    return Matrix_Add(a, ScalarMatrix_New(a.rows, a.cols, &scalar));
 }
 
 Matrix Matrix_SubScalar(Matrix a, float scalar) {
@@ -60,7 +58,14 @@ Matrix Matrix_SubScalar(Matrix a, float scalar) {
 }
 
 Matrix Matrix_MultiplyScalar(Matrix a, float scalar) {
-    not_implemented;
+    size_t numElements = a.rows * a.cols;
+    float* elements = malloc(numElements * sizeof(float));
+    
+    for (int i = 0; i < numElements; i++) {
+        elements[i] = Matrix_GetAtIndex(&a, i) * scalar;
+    }
+
+    return Matrix_New(a.rows, a.cols, elements);
 }
 
 Matrix Matrix_Inverse(Matrix self) {
