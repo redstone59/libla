@@ -21,17 +21,6 @@ typedef struct MatrixVTable {
     float (*GetCell)(Matrix *self, uint64_t row, uint64_t col);
     float (*SetIndex)(Matrix *self, uint64_t index, float value);
     float (*SetCell)(Matrix *self, uint64_t row, uint64_t col, float value);
-
-    Matrix (*GetRow)(Matrix *self, uint64_t row);
-    Matrix (*GetCol)(Matrix *self, uint64_t col);
-    Matrix (*SetRow)(Matrix *self, uint64_t row, Matrix values);
-    Matrix (*SetCol)(Matrix *self, uint64_t col, Matrix values);
-
-    Matrix (*SwapRows)(Matrix *self, uint64_t rowA, uint64_t rowB);
-    Matrix (*SwapCols)(Matrix *self, uint64_t, uint64_t);
-    Matrix (*MultiplyRow)(Matrix *self, uint64_t row, float multiplier);
-    /** `rowA` = `rowA` + `multiplier` * `rowB` */
-    Matrix (*AddMultipleOfRow)(Matrix *self, uint64_t rowA, uint64_t rowB, float multiplier);
 } MatrixVTable;
 
 struct Matrix {
@@ -47,6 +36,22 @@ struct Matrix {
 
 Matrix Matrix_New(uint64_t rows, uint64_t cols, float* cells);
 void Matrix_Destroy(Matrix* self);
+
+float Matrix_GetAtIndex(Matrix *self, uint64_t index);
+float Matrix_GetCell(Matrix *self, uint64_t row, uint64_t col);
+float Matrix_SetIndex(Matrix *self, uint64_t index, float value);
+float Matrix_SetCell(Matrix *self, uint64_t row, uint64_t col, float value);
+
+Matrix Matrix_GetRow(Matrix *self, uint64_t row);
+Matrix Matrix_GetCol(Matrix *self, uint64_t col);
+Matrix Matrix_SetRow(Matrix *self, uint64_t row, Matrix values);
+Matrix Matrix_SetCol(Matrix *self, uint64_t col, Matrix values);
+
+Matrix Matrix_SwapRows(Matrix *self, uint64_t rowA, uint64_t rowB);
+Matrix Matrix_SwapCols(Matrix *self, uint64_t, uint64_t);
+Matrix Matrix_MultiplyRow(Matrix *self, uint64_t row, float multiplier);
+/** `rowA` = `rowA` + `multiplier` * `rowB` */
+Matrix Matrix_AddMultipleOfRow(Matrix *self, uint64_t rowA, uint64_t rowB, float multiplier);
 
 uint64_t Matrix_CellToIndex(Matrix* self, uint64_t row, uint64_t col);
 void Matrix_Print(Matrix* self);
