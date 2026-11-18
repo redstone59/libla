@@ -3,6 +3,8 @@
 
 #include <stdint.h>
 
+typedef struct Matrix Matrix;
+
 typedef enum MatrixKind {
     LA_MATKIND_FULL,
     LA_MATKIND_SCALAR,
@@ -14,7 +16,25 @@ typedef enum MatrixKind {
     LA_MATKIND_COUNT
 } MatrixKind;
 
-typedef struct Matrix {
+typedef struct MatrixVTable {
+    float (*GetAtIndex)(Matrix *self, uint64_t index);
+    float (*GetCell)(Matrix *self, uint64_t row, uint64_t col);
+    float (*SetIndex)(Matrix *self, uint64_t index, float value);
+    float (*SetCell)(Matrix *self, uint64_t row, uint64_t col, float value);
+
+    Matrix (*GetRow)(Matrix *self, uint64_t row);
+    Matrix (*GetCol)(Matrix *self, uint64_t col);
+    Matrix (*SetRow)(Matrix *self, uint64_t row, Matrix values);
+    Matrix (*SetCol)(Matrix *self, uint64_t col, Matrix values);
+
+    Matrix (*SwapRows)(Matrix *self, uint64_t rowA, uint64_t rowB);
+    Matrix (*SwapCols)(Matrix *self, uint64_t, uint64_t);
+    Matrix (*MultiplyRow)(Matrix *self, uint64_t row, float multiplier);
+    /** `rowA` = `rowA` + `multiplier` * `rowB` */
+    Matrix (*AddMultipleOfRow)(Matrix *self, uint64_t rowA, uint64_t rowB, float multiplier);
+} MatrixVTable;
+
+struct Matrix {
     uint64_t rows;
     uint64_t cols;
     MatrixKind kind;
@@ -22,25 +42,8 @@ typedef struct Matrix {
     float *cells;
 
     MatrixVTable methods;
-} Matrix;
+};
 
-typedef struct MatrixVTable {
-    float (*GetAtIndex)(Matrix, uint64_t);
-    float (*GetCell)(Matrix, uint64_t, uint64_t);
-    float (*SetIndex)(Matrix, uint64_t, float);
-    float (*SetCell)(Matrix, uint64_t, uint64_t, float);
-
-    Matrix (*GetRow)(Matrix*, uint64_t);
-    Matrix (*GetCol)(Matrix*, uint64_t, Matrix);
-    Matrix (*SetRow)(Matrix*, uint64_t);
-    Matrix (*SetCol)(Matrix*, uint64_t, Matrix);
-
-    Matrix (*SwapRows)(Matrix*, uint64_t, uint64_t);
-    Matrix (*SwapCols)(Matrix*, uint64_t, uint64_t);
-    Matrix (*MultiplyRow)(Matrix*, uint64_t, float);
-    /** `rowA` = `rowA` + `multiplier` * `rowB` */
-    Matrix (*AddMultipleOfRow)(Matrix*, uint64_t, uint64_t, float);
-} MatrixVTable;
 
 Matrix Matrix_New(uint64_t rows, uint64_t cols, float* cells);
 void Matrix_Destroy(Matrix* self);

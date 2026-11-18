@@ -9,7 +9,7 @@ Matrix Matrix_Add(Matrix a, Matrix b) {
     int size = a.rows * a.cols;
     float *elements = malloc(size * sizeof(float));
     for (int i = 0; i < size; i++) {
-        elements[i] = Matrix_GetIndex(&a, i) + Matrix_GetIndex(&b, i);
+        elements[i] = a.methods.GetAtIndex(&a, i) + b.methods.GetAtIndex(&b, i);
     }
 
     return Matrix_New(a.rows, a.cols, elements);

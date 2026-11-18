@@ -1,7 +1,7 @@
 CC=gcc
 CFLAGS=-Wall
 
-FILES=la_matrix.c la_arithmetic.c
+FILES=./libla/la_matrix.c ./libla/matrix_storage/la_fullmatrix.c ./libla/matrix_storage/la_scalarmatrix.c
 
 main: main.c
 	${CC} ${CFLAGS} -o main main.c ${FILES}
