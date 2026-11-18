@@ -1,7 +1,7 @@
 #ifndef LA_ARITHMETIC_H_
 #define LA_ARITHMETIC_H_
 
-#include "la_matrix.h"
+#include "matrix.h"
 
 Matrix Matrix_Add(Matrix a, Matrix b);
 Matrix Matrix_Sub(Matrix a, Matrix b);

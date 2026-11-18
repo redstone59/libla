@@ -1,7 +1,7 @@
 #include <stdio.h>
 
-#include "./libla/la_matrix.h"
-#include "./libla/la_arithmetic.h"
+#include "./libla/matrix.h"
+#include "./libla/arithmetic.h"
 
 int main(int argc, char** argv) {
     Matrix a = Matrix_New(2, 3, (float[6]) {

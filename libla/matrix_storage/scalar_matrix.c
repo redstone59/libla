@@ -1,4 +1,4 @@
-#include "la_scalarmatrix.h"
+#include "scalar_matrix.h"
 
 static float ScalarMatrix_GetAtIndex(Matrix *self, uint64_t index) {
     return *self->cells;

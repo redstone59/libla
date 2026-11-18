@@ -1,8 +1,8 @@
-#include "la_matrix.h"
+#include "matrix.h"
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "la_common.h"
+#include "common.h"
 
 static float FullMatrix_GetAtIndex(Matrix *self, uint64_t index) {
     return self->cells[index];

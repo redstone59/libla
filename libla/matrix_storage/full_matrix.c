@@ -1,4 +1,4 @@
-#include "la_fullmatrix.h"
+#include "full_matrix.h"
 
 static float FullMatrix_GetAtIndex(Matrix *self, uint64_t index) {
     return self->cells[index];

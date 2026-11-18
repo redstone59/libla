@@ -1,9 +1,9 @@
-#include "la_arithmetic.h"
+#include "arithmetic.h"
 
-#include "la_common.h"
+#include "common.h"
 #include <stdlib.h>
 
-#include "./matrix_storage/la_scalarmatrix.h"
+#include "./matrix_storage/scalar_matrix.h"
 
 Matrix Matrix_Add(Matrix a, Matrix b) {
     assert(a.rows == b.rows && a.cols == b.cols);
