@@ -8,8 +8,10 @@ Matrix Matrix_New(uint64_t rows, uint64_t cols, float* cells) {
     return (Matrix) {
         .rows = rows,
         .cols = cols,
-        .kind = LA_MATKIND_NONSPARSE,
-        .cells = cells
+        .kind = LA_MATKIND_FULL,
+        .cells = cells,
+
+        .methods = {0}
     };
 }
 
@@ -22,9 +24,13 @@ void Matrix_Destroy(Matrix* self) {
     self->cells = NULL;
 }
 
-float Matrix_GetIndex(Matrix* self, uint64_t index) {
+uint64_t Matrix_CellToIndex(Matrix* self, uint64_t row, uint64_t col) {
+    return row * self->cols + col;
+}
+
+float Matrix_GetAtIndex(Matrix* self, uint64_t index) {
     switch (self->kind) {
-        case LA_MATKIND_NONSPARSE:
+        case LA_MATKIND_FULL:
             return self->cells[index];
         case LA_MATKIND_SCALAR:
             return *self->cells;
@@ -38,14 +44,7 @@ float Matrix_GetCell(Matrix* self, uint64_t row, uint64_t col) {
     panic_if(row < 0 || row >= self->rows, "Attempted to index row outside of matrix bounds");
     panic_if(col < 0 || col >= self->cols, "Attempted to index column outside of matrix bounds");
 
-    int index = row * self->cols + col;
-    return Matrix_GetIndex(self, index);
-}
-
-// TODO: setters, getting rows/columns
-
-int Matrix_GetNonzeroIndicies(Matrix* self) {
-
+    return Matrix_GetAtIndex(self, Matrix_CellToIndex(self, row, col));
 }
 
 void Matrix_Print(Matrix* self) {
