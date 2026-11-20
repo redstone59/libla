@@ -1,7 +1,6 @@
 #include "matrix.h"
 
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 #include "common.h"
 
@@ -12,7 +11,7 @@ Matrix Matrix_New(uint64_t rows, uint64_t cols, float* cells) {
 }
 
 void Matrix_Destroy(Matrix* self) {
-    free(&self->cells.asArrays);
+    LA_FREE(&self->cells.asArrays);
     self->cells.asArrays = NULL;
 }
 
@@ -43,7 +42,7 @@ void Matrix_SetCell(Matrix *self, uint64_t row, uint64_t col, float value) {
 }
 
 Matrix Matrix_GetRow(Matrix *self, uint64_t row) {
-    float *cells = malloc(self->cols * sizeof(float));
+    float *cells = LA_ALLOC(self->cols * sizeof(float));
     
     for (int i = 0; i < self->cols; i++) {
         cells[i] = Matrix_GetCell(self, i, row);
@@ -53,7 +52,7 @@ Matrix Matrix_GetRow(Matrix *self, uint64_t row) {
 }
 
 Matrix Matrix_GetCol(Matrix *self, uint64_t col) {
-    float *cells = malloc(self->rows * sizeof(float));
+    float *cells = LA_ALLOC(self->rows * sizeof(float));
     
     for (int i = 0; i < self->rows; i++) {
         cells[i] = Matrix_GetCell(self, col, i);

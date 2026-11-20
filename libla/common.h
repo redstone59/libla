@@ -10,4 +10,19 @@
 #   define not_implemented exit(1)
 #endif
 
+#ifndef LA_ALLOC
+#   include <stdlib.h>
+#   define LA_ALLOC malloc
+#endif
+
+#ifndef LA_FREE
+#   include <stdlib.h>
+#   define LA_FREE free
+#endif
+
+#ifndef LA_REALLOC
+#   include <stdlib.h>
+#   define LA_REALLOC realloc
+#endif
+
 #endif // LA_COMMON_H_
