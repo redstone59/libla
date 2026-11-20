@@ -1,5 +1,8 @@
 #include "sparse_matrix.h"
 
+#include <stdio.h>
+#include <stdlib.h>
+
 static float SparseMatrix_GetCell(Matrix *self, uint64_t row, uint64_t col) {
     DynamicArray rowVec = self->cells.asArrays[0];
     DynamicArray colVec = self->cells.asArrays[1];
@@ -69,7 +72,10 @@ Matrix SparseMatrix_New(uint64_t rows, uint64_t cols, float **vecs, size_t nz, s
         DynamicArray_Append(&valArr, valVec[i]);
     }
 
-    DynamicArray arrays[3] = { rowArr, colArr, valArr };
+    DynamicArray* arrays = malloc(3 * sizeof(DynamicArray*));
+    arrays[0] = rowArr;
+    arrays[1] = colArr;
+    arrays[2] = valArr;
 
     return (Matrix){
         .rows = rows,
