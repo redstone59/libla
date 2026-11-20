@@ -7,7 +7,7 @@
 int main(int argc, char** argv) {
     Matrix a = Matrix_New(2, 3, (float[6]) {
         2, 3, 4, 
-        1, 0, 0
+        1, 0, 0,
     });
     Matrix_Print(&a, "%.0f");
 
@@ -15,7 +15,7 @@ int main(int argc, char** argv) {
     float col[8] = {  0,  1,  1,  3,  2,  3,  4,  5 };
     float val[8] = { 10, 20, 30, 40, 50, 60, 70, 80 };
     float *sparse[3] = { row, col, val };
-
+    
     Matrix b = SparseMatrix_New(4, 6, sparse, 8, 16);
     Matrix_Print(&b, "%2.0f");
 
