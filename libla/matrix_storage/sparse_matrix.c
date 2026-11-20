@@ -26,17 +26,40 @@ static float SparseMatrix_GetAtIndex(Matrix *self, uint64_t index) {
 }
 
 static void SparseMatrix_SetCell(Matrix *self, uint64_t row, uint64_t col, float value) {
-    DynamicArray rowVec = self->cells.asArrays[0];
-    DynamicArray colVec = self->cells.asArrays[1];
-    DynamicArray valVec = self->cells.asArrays[2];
+    DynamicArray *rowVec = &self->cells.asArrays[0];
+    DynamicArray *colVec = &self->cells.asArrays[1];
+    DynamicArray *valVec = &self->cells.asArrays[2];
 
     // TODO: change to binary search/other search alg
     //       for speed
     for (int i = 0; i < self->count; i++) {
-        if (DynamicArray_Get(&rowVec, i) == row && DynamicArray_Get(&colVec, i) == col) {
-            DynamicArray_Set(&valVec, i, value);
+        float currentRow = DynamicArray_Get(rowVec, i);
+        float currentCol = DynamicArray_Get(colVec, i);
+        // If we're overwriting a non-zero cell, then overwrite it.
+        if (currentRow == row && currentCol == col) {
+            if (value == 0) {
+                DynamicArray_RemoveAt(rowVec, i);
+                DynamicArray_RemoveAt(colVec, i);
+                DynamicArray_RemoveAt(valVec, i);
+                self->count--;
+            } else {
+                DynamicArray_Set(valVec, i, value);
+            }
             return;
         }
+        
+        // Otherwise, insert new element before element that comes after it.
+        if (currentRow > row || (currentRow == row && currentCol > col)) {
+            if (value != 0) {
+                DynamicArray_Insert(rowVec, i, row);
+                DynamicArray_Insert(colVec, i, col);
+                DynamicArray_Insert(valVec, i, value);
+                self->count++;
+            }
+            return;
+        }
+
+        // TODO: handle 0s.
     }
 
     return;

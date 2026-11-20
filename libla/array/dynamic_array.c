@@ -74,7 +74,7 @@ void DynamicArray_Insert(DynamicArray* self, size_t index, float value) {
         DynamicArray__Resize(self, self->capacity << 1);
     }
 
-    memmove(&self->elements[index + 1], &self->elements[index], self->count - index);
+    memmove(&self->elements[index + 1], &self->elements[index], (self->count - index) * sizeof(float));
     self->elements[index] = value;
     self->count++;
 }
@@ -83,7 +83,7 @@ void DynamicArray_RemoveAt(DynamicArray* self, size_t index) {
     panic_if(self->elements == NULL, "Attempted to remove from freed dynamic array.");
     panic_if(index < 0 || index >= self->count, "Attempted to remove outside of bounds of array.");
 
-    memmove(&self->elements[index], &self->elements[index + 1], self->count - index - 1);
+    memmove(&self->elements[index], &self->elements[index + 1], (self->count - index - 1) * sizeof(float));
     self->count--;
 }
 
