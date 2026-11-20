@@ -4,8 +4,6 @@
 #include "libla/arithmetic.h"
 #include "libla/matrix_types.h"
 
-#include "libla/array/dynamic_array.h"
-
 int main(int argc, char** argv) {
     Matrix a = Matrix_New(2, 3, (float[6]) {
         2, 3, 4, 
@@ -26,6 +24,6 @@ int main(int argc, char** argv) {
 
     Matrix c = Matrix_Multiply(Matrix_Transpose(a), a);
     Matrix_Print(&c, "%.0f");
-    
+
     return 0;
 }

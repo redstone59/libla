@@ -17,7 +17,7 @@ void Matrix_Destroy(Matrix* self) {
 
 float Matrix_GetAtIndex(Matrix *self, uint64_t index) {
     panic_if(index < 0 || index >= self->rows * self->cols, "Attempted to index outside the bounds of the matrix.");
-    return self->methods.GetAtIndex(self, index);
+    return self->methods->GetAtIndex(self, index);
 }
 
 float Matrix_GetCell(Matrix *self, uint64_t row, uint64_t col) {
@@ -25,12 +25,12 @@ float Matrix_GetCell(Matrix *self, uint64_t row, uint64_t col) {
     panic_if(row < 0 || row >= self->rows, "Attempted to index row outside of matrix bounds");
     panic_if(col < 0 || col >= self->cols, "Attempted to index column outside of matrix bounds");
     
-    return self->methods.GetCell(self, row, col);
+    return self->methods->GetCell(self, row, col);
 }
 
 void Matrix_SetIndex(Matrix *self, uint64_t index, float value) {
     panic_if(index < 0 || index >= self->rows * self->cols, "Attempted to index outside the bounds of the matrix.");
-    self->methods.SetIndex(self, index, value);
+    self->methods->SetIndex(self, index, value);
 }
 
 void Matrix_SetCell(Matrix *self, uint64_t row, uint64_t col, float value) {
@@ -38,7 +38,7 @@ void Matrix_SetCell(Matrix *self, uint64_t row, uint64_t col, float value) {
     panic_if(row < 0 || row >= self->rows, "Attempted to index row outside of matrix bounds");
     panic_if(col < 0 || col >= self->cols, "Attempted to index column outside of matrix bounds");
     
-    self->methods.SetCell(self, row, col, value);
+    self->methods->SetCell(self, row, col, value);
 }
 
 Matrix Matrix_GetRow(Matrix *self, uint64_t row) {
@@ -73,7 +73,7 @@ void Matrix_SwapRows(Matrix *self, uint64_t rowA, uint64_t rowB) {
     not_implemented;
 }
 
-void Matrix_SwapCols(Matrix *self, uint64_t, uint64_t) {
+void Matrix_SwapCols(Matrix *self, uint64_t colA, uint64_t colB) {
     not_implemented;
 }
 
@@ -90,7 +90,6 @@ uint64_t Matrix_CellToIndex(Matrix* self, uint64_t row, uint64_t col) {
 }
 
 #define LA_MATRIX_PRINT_MAX_LEN 256
-
 void Matrix_Print(Matrix* self, const char* specifier) {
     // Determine longest string inside one cell.
     int longestInColumn[self->cols];
@@ -113,6 +112,7 @@ void Matrix_Print(Matrix* self, const char* specifier) {
     // Print matrix elements and surrounding box characters.
     for (int row = 0; row < self->rows; row++) {
         char cellStr[LA_MATRIX_PRINT_MAX_LEN];
+
 #ifndef LA_NO_FANCY_PRINT
         if (row == 0) {
             printf("┌ ");
@@ -128,7 +128,7 @@ void Matrix_Print(Matrix* self, const char* specifier) {
                 cellStr, 
                 LA_MATRIX_PRINT_MAX_LEN, 
                 specifier, 
-                self->methods.GetCell(self, row, col)
+                Matrix_GetCell(self, row, col)
             );
             printf("%*s ", longestInColumn[col], cellStr);
         }
@@ -145,7 +145,6 @@ void Matrix_Print(Matrix* self, const char* specifier) {
         printf("\n");
 #endif // LA_NO_FANCY_PRINT
     }
-
 
     printf("\n");
 }

@@ -107,6 +107,6 @@ Matrix SparseMatrix_New(uint64_t rows, uint64_t cols, float **vecs, size_t nz, s
         .kind = LA_MATKIND_SPARSE,
         .cells.asArrays = arrays,
 
-        .methods = sparseMethods
+        .methods = &sparseMethods
     };
 }

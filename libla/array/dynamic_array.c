@@ -11,7 +11,6 @@ static void DynamicArray__Resize(DynamicArray* self, size_t toFit) {
     while (newSize < toFit) {
         newSize <<= 1;
     }
-    printf("%zu\n", newSize);
 
     if (self->capacity == newSize) {
         return;
@@ -42,21 +41,21 @@ void DynamicArray_LA_FREE(DynamicArray* self) {
 }
 
 float DynamicArray_Get(DynamicArray* self, size_t index) {
-    panic_if(self->elements == NULL, "Attempted to get on LA_FREEd dynamic array.");
+    panic_if(self->elements == NULL, "Attempted to get on freed dynamic array.");
     panic_if(index < 0 || index >= self->count, "Attempted to get outside of bounds of array.");
 
     return self->elements[index];
 }
 
 void DynamicArray_Set(DynamicArray* self, size_t index, float value) {
-    panic_if(self->elements == NULL, "Attempted to set on LA_FREEd dynamic array.");
+    panic_if(self->elements == NULL, "Attempted to set on freed dynamic array.");
     panic_if(index < 0 || index >= self->count, "Attempted to set outside of bounds of array.");
     
     self->elements[index] = value;
 }
 
 void DynamicArray_Append(DynamicArray* self, float value) {
-    panic_if(self->elements == NULL, "Attempted to append to LA_FREEd dynamic array.");
+    panic_if(self->elements == NULL, "Attempted to append to freed dynamic array.");
     
     if (self->count + 1 > self->capacity) {
         DynamicArray__Resize(self, self->count + 1);
@@ -66,7 +65,7 @@ void DynamicArray_Append(DynamicArray* self, float value) {
 }
 
 void DynamicArray_Insert(DynamicArray* self, size_t index, float value) {
-    panic_if(self->elements == NULL, "Attempted to insert in LA_FREEd dynamic array.");
+    panic_if(self->elements == NULL, "Attempted to insert in freed dynamic array.");
     panic_if(index < 0 || index >= self->count, "Attempted to insert outside of bounds of array.");
     
     if (self->count + 1 > self->capacity) {
@@ -79,7 +78,7 @@ void DynamicArray_Insert(DynamicArray* self, size_t index, float value) {
 }
 
 void DynamicArray_RemoveAt(DynamicArray* self, size_t index) {
-    panic_if(self->elements == NULL, "Attempted to remove from LA_FREEd dynamic array.");
+    panic_if(self->elements == NULL, "Attempted to remove from freed dynamic array.");
     panic_if(index < 0 || index >= self->count, "Attempted to remove outside of bounds of array.");
 
     memmove(&self->elements[index], &self->elements[index + 1], (self->count - index - 1) * sizeof(float));
@@ -87,7 +86,7 @@ void DynamicArray_RemoveAt(DynamicArray* self, size_t index) {
 }
 
 void DynamicArray_Remove(DynamicArray* self, float value) {
-    panic_if(self->elements == NULL, "Attempted to remove from LA_FREEd dynamic array.");
+    panic_if(self->elements == NULL, "Attempted to remove from freed dynamic array.");
     
     for (size_t i = 0; i < self->count; i++) {
         if (DynamicArray_Get(self, i) != value) {

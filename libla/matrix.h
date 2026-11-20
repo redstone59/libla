@@ -40,7 +40,7 @@ struct Matrix {
         DynamicArray *asArrays;
     } cells;
 
-    MatrixVTable methods;
+    MatrixVTable *methods;
 };
 
 

@@ -31,6 +31,6 @@ Matrix ScalarMatrix_New(uint64_t rows, uint64_t cols, float *value) {
         .kind = LA_MATKIND_SCALAR,
         .cells.asFloatVec = value,
 
-        .methods = scalarMethods
+        .methods = &scalarMethods
     };
 }

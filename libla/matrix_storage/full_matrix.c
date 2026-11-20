@@ -32,6 +32,6 @@ Matrix FullMatrix_New(uint64_t rows, uint64_t cols, float *cells)
         .kind = LA_MATKIND_FULL,
         .cells.asFloatVec = cells,
 
-        .methods = fullMethods
+        .methods = &fullMethods
     };
 }
