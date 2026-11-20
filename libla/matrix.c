@@ -89,8 +89,22 @@ uint64_t Matrix_CellToIndex(Matrix* self, uint64_t row, uint64_t col) {
     return row * self->cols + col;
 }
 
+#define LA_MATRIX_PRINT_MAX_LEN 256
+
 void Matrix_Print(Matrix* self, const char* specifier) {
+    // Determine longest string inside one cell.
+    size_t longest = 1;
+    for (int i = 0; i < self->count; i++) {
+        char cellStr[LA_MATRIX_PRINT_MAX_LEN]; 
+        int length = snprintf(cellStr, LA_MATRIX_PRINT_MAX_LEN, specifier, Matrix_GetAtIndex(self, i));
+        if (length > longest) {
+            longest = length;
+        }
+    }
+
+    // Print matrix elements and surrounding box characters.
     for (int row = 0; row < self->rows; row++) {
+        char cellStr[LA_MATRIX_PRINT_MAX_LEN];
         if (row == 0) {
             printf("┌ ");
         } else if (row == self->rows - 1) {
@@ -100,8 +114,14 @@ void Matrix_Print(Matrix* self, const char* specifier) {
         }
 
         for (int col = 0; col < self->cols; col++) {
-            printf(specifier, self->methods.GetCell(self, row, col));
-            printf(" ");
+            int length = snprintf(
+                cellStr, 
+                LA_MATRIX_PRINT_MAX_LEN, 
+                specifier, 
+                self->methods.GetCell(self, row, col)
+            );
+            // how delightfully disgusting
+            printf("%-*s%s ", (int)(longest - length), "", cellStr);
         }
         
         if (row == 0) {
@@ -112,5 +132,6 @@ void Matrix_Print(Matrix* self, const char* specifier) {
             printf("│\n");
         }
     }
+
     printf("\n");
 }
