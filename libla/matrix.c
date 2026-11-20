@@ -132,7 +132,7 @@ void Matrix_Print(Matrix* self, const char* specifier) {
                 self->methods.GetCell(self, row, col)
             );
             // how delightfully disgusting
-            printf("%-*s%s ", (int)(longestInColumn[col] - length), "", cellStr);
+            printf("%-*s%s ", longestInColumn[col] - length, "", cellStr);
         }
         
 #ifndef LA_NO_FANCY_PRINT
