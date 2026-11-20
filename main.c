@@ -19,10 +19,10 @@ int main(int argc, char** argv) {
     float *sparse[3] = { row, col, val };
     
     Matrix b = SparseMatrix_New(4, 6, sparse, 8, 16);
-    Matrix_Print(&b, "%2.0f");
+    Matrix_Print(&b, "%.0f");
 
     Matrix_SetCell(&b, 0, 5, 100);
-    Matrix_Print(&b, "%3.0f");
+    Matrix_Print(&b, "%.0f");
 
     Matrix c = Matrix_Multiply(Matrix_Transpose(a), a);
     Matrix_Print(&c, "%.0f");

@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "common.h"
 
 #include "matrix_storage/full_matrix.h"
@@ -93,12 +94,20 @@ uint64_t Matrix_CellToIndex(Matrix* self, uint64_t row, uint64_t col) {
 
 void Matrix_Print(Matrix* self, const char* specifier) {
     // Determine longest string inside one cell.
-    size_t longest = 1;
-    for (int i = 0; i < self->count; i++) {
-        char cellStr[LA_MATRIX_PRINT_MAX_LEN]; 
-        int length = snprintf(cellStr, LA_MATRIX_PRINT_MAX_LEN, specifier, Matrix_GetAtIndex(self, i));
-        if (length > longest) {
-            longest = length;
+    int longestInColumn[self->cols];
+    memset(longestInColumn, 0, sizeof(longestInColumn));
+    for (int row = 0; row < self->rows; row++) {
+        for (int col = 0; col < self->cols; col++) {
+            char cellStr[LA_MATRIX_PRINT_MAX_LEN];
+            int length = snprintf(
+                cellStr, 
+                LA_MATRIX_PRINT_MAX_LEN, 
+                specifier, 
+                Matrix_GetCell(self, row, col)
+            );
+            if (length > longestInColumn[col]) {
+                longestInColumn[col] = length;
+            }
         }
     }
 
@@ -121,7 +130,7 @@ void Matrix_Print(Matrix* self, const char* specifier) {
                 self->methods.GetCell(self, row, col)
             );
             // how delightfully disgusting
-            printf("%-*s%s ", (int)(longest - length), "", cellStr);
+            printf("%-*s%s ", (int)(longestInColumn[col] - length), "", cellStr);
         }
         
         if (row == 0) {
