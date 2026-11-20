@@ -21,7 +21,7 @@ float Matrix_GetAtIndex(Matrix *self, uint64_t index) {
 }
 
 float Matrix_GetCell(Matrix *self, uint64_t row, uint64_t col) {
-    panic_if(self->cells.asArrays == NULL,          "Matrix has not been initialised!");
+    panic_if(self->cells.asArrays == NULL, "Matrix has not been initialised!");
     panic_if(row < 0 || row >= self->rows, "Attempted to index row outside of matrix bounds");
     panic_if(col < 0 || col >= self->cols, "Attempted to index column outside of matrix bounds");
     
@@ -34,7 +34,7 @@ void Matrix_SetIndex(Matrix *self, uint64_t index, float value) {
 }
 
 void Matrix_SetCell(Matrix *self, uint64_t row, uint64_t col, float value) {
-    panic_if(self->cells.asArrays == NULL,          "Matrix has not been initialised!");
+    panic_if(self->cells.asArrays == NULL, "Matrix has not been initialised!");
     panic_if(row < 0 || row >= self->rows, "Attempted to index row outside of matrix bounds");
     panic_if(col < 0 || col >= self->cols, "Attempted to index column outside of matrix bounds");
     
