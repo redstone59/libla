@@ -58,8 +58,6 @@ static void SparseMatrix_SetCell(Matrix *self, uint64_t row, uint64_t col, float
             }
             return;
         }
-
-        // TODO: handle 0s.
     }
 
     return;

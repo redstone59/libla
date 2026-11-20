@@ -71,10 +71,18 @@ Matrix Matrix_MultiplyScalar(Matrix a, float scalar) {
 }
 
 Matrix Matrix_Inverse(Matrix self) {
+    // NOTE: augment with identity matrix,
+    //       produce reduced row-echelon form
     not_implemented;
 }
 
 float Matrix_Det(Matrix self) {
+    // NOTE: for large matrices use LU decomposition
+    //      A = LU
+    // det(A) = det(LU)
+    // det(A) = det(L)det(U)
+    //
+    // Since L and U are triangular, determinant is product of diagonal entries.
     not_implemented;
 }
 
