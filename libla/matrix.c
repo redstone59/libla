@@ -4,46 +4,15 @@
 #include <stdlib.h>
 #include "common.h"
 
-static float FullMatrix_GetAtIndex(Matrix *self, uint64_t index) {
-    return self->cells.asVec[index];
-}
-
-static float FullMatrix_GetCell(Matrix *self, uint64_t row, uint64_t col) {
-    return FullMatrix_GetAtIndex(self, Matrix_CellToIndex(self, row, col));
-}
-
-static void FullMatrix_SetIndex(Matrix *self, uint64_t index, float value) {
-    self->cells.asVec[index] = value;
-}
-
-static void FullMatrix_SetCell(Matrix *self, uint64_t row, uint64_t col, float value) {
-    FullMatrix_SetIndex(self, Matrix_CellToIndex(self, row, col), value);
-}
+#include "matrix_storage/full_matrix.h"
 
 Matrix Matrix_New(uint64_t rows, uint64_t cols, float* cells) {
-    return (Matrix) {
-        .rows = rows,
-        .cols = cols,
-        .count = rows * cols,
-        .kind = LA_MATKIND_FULL,
-        .cells.asVec = cells,
-
-        .methods = {
-            .GetAtIndex = FullMatrix_GetAtIndex,
-            .GetCell = FullMatrix_GetCell,
-            .SetIndex = FullMatrix_SetIndex,
-            .SetCell = FullMatrix_SetCell
-        }
-    };
+    return FullMatrix_New(rows, cols, cells);
 }
 
 void Matrix_Destroy(Matrix* self) {
-    if (self->cells.asVec == NULL) {
-        return;
-    }
-
-    free(self->cells.asVec);
-    self->cells.asVec = NULL;
+    free(&self->cells.asArrays);
+    self->cells.asArrays = NULL;
 }
 
 float Matrix_GetAtIndex(Matrix *self, uint64_t index) {
@@ -52,7 +21,7 @@ float Matrix_GetAtIndex(Matrix *self, uint64_t index) {
 }
 
 float Matrix_GetCell(Matrix *self, uint64_t row, uint64_t col) {
-    panic_if(self->cells.asVec == NULL,          "Matrix has not been initialised!");
+    panic_if(self->cells.asArrays == NULL,          "Matrix has not been initialised!");
     panic_if(row < 0 || row >= self->rows, "Attempted to index row outside of matrix bounds");
     panic_if(col < 0 || col >= self->cols, "Attempted to index column outside of matrix bounds");
     
@@ -65,7 +34,7 @@ void Matrix_SetIndex(Matrix *self, uint64_t index, float value) {
 }
 
 void Matrix_SetCell(Matrix *self, uint64_t row, uint64_t col, float value) {
-    panic_if(self->cells.asVec == NULL,          "Matrix has not been initialised!");
+    panic_if(self->cells.asArrays == NULL,          "Matrix has not been initialised!");
     panic_if(row < 0 || row >= self->rows, "Attempted to index row outside of matrix bounds");
     panic_if(col < 0 || col >= self->cols, "Attempted to index column outside of matrix bounds");
     
@@ -120,10 +89,11 @@ uint64_t Matrix_CellToIndex(Matrix* self, uint64_t row, uint64_t col) {
     return row * self->cols + col;
 }
 
-void Matrix_Print(Matrix* self) {
+void Matrix_Print(Matrix* self, const char* specifier) {
     for (int row = 0; row < self->rows; row++) {
         for (int col = 0; col < self->cols; col++) {
-            printf("%.2f ", self->methods.GetCell(self, row, col));
+            printf(specifier, self->methods.GetCell(self, row, col));
+            printf(" ");
         }
         printf("\n");
     }

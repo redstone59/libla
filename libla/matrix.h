@@ -1,7 +1,10 @@
 #ifndef LA_MATRIX_H_
 #define LA_MATRIX_H_
 
+#include <stddef.h>
 #include <stdint.h>
+
+#include "array/dynamic_array.h"
 
 typedef struct Matrix Matrix;
 
@@ -26,13 +29,15 @@ typedef struct MatrixVTable {
 struct Matrix {
     uint64_t rows;
     uint64_t cols;
-    uint64_t count;
+
+    size_t count;
 
     MatrixKind kind;
 
     union {
-        float *asVec;
-        float **asArrays;
+        float *asFloatVec;
+        DynamicArray asVec;
+        DynamicArray *asArrays;
     } cells;
 
     MatrixVTable methods;
@@ -52,13 +57,14 @@ Matrix Matrix_GetCol(Matrix *self, uint64_t col);
 void Matrix_SetRow(Matrix *self, uint64_t row, Matrix values);
 void Matrix_SetCol(Matrix *self, uint64_t col, Matrix values);
 
+// TODO: pull out into vtable for each matrix type (18/11/26)
 void Matrix_SwapRows(Matrix *self, uint64_t rowA, uint64_t rowB);
-void Matrix_SwapCols(Matrix *self, uint64_t, uint64_t);
+void Matrix_SwapCols(Matrix *self, uint64_t colA, uint64_t colB);
 void Matrix_MultiplyRow(Matrix *self, uint64_t row, float multiplier);
 /** `rowA` = `rowA` + `multiplier` * `rowB` */
 void Matrix_AddMultipleOfRow(Matrix *self, uint64_t rowA, uint64_t rowB, float multiplier);
 
 uint64_t Matrix_CellToIndex(Matrix* self, uint64_t row, uint64_t col);
-void Matrix_Print(Matrix* self);
+void Matrix_Print(Matrix* self, const char* specifier);
 
 #endif // LA_MATRIX_H_
