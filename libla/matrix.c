@@ -91,11 +91,26 @@ uint64_t Matrix_CellToIndex(Matrix* self, uint64_t row, uint64_t col) {
 
 void Matrix_Print(Matrix* self, const char* specifier) {
     for (int row = 0; row < self->rows; row++) {
+        if (row == 0) {
+            printf("┌ ");
+        } else if (row == self->rows - 1) {
+            printf("└ ");
+        } else {
+            printf("│ ");
+        }
+
         for (int col = 0; col < self->cols; col++) {
             printf(specifier, self->methods.GetCell(self, row, col));
             printf(" ");
         }
-        printf("\n");
+        
+        if (row == 0) {
+            printf("┐\n");
+        } else if (row == self->rows - 1) {
+            printf("┘\n");
+        } else {
+            printf("│\n");
+        }
     }
     printf("\n");
 }
