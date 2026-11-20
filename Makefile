@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS=-Wall
+CFLAGS=-Wall -std=c99
 
 DA_FILES=./libla/array/dynamic_array.c
 MATRIX_STORAGE_FILES=./libla/matrix_storage/full_matrix.c ./libla/matrix_storage/scalar_matrix.c ./libla/matrix_storage/sparse_matrix.c

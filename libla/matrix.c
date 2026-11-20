@@ -114,6 +114,7 @@ void Matrix_Print(Matrix* self, const char* specifier) {
     // Print matrix elements and surrounding box characters.
     for (int row = 0; row < self->rows; row++) {
         char cellStr[LA_MATRIX_PRINT_MAX_LEN];
+#ifndef LA_NO_FANCY_PRINT
         if (row == 0) {
             printf("┌ ");
         } else if (row == self->rows - 1) {
@@ -121,6 +122,7 @@ void Matrix_Print(Matrix* self, const char* specifier) {
         } else {
             printf("│ ");
         }
+#endif // LA_NO_FANCY_PRINT
 
         for (int col = 0; col < self->cols; col++) {
             int length = snprintf(
@@ -133,6 +135,7 @@ void Matrix_Print(Matrix* self, const char* specifier) {
             printf("%-*s%s ", (int)(longestInColumn[col] - length), "", cellStr);
         }
         
+#ifndef LA_NO_FANCY_PRINT
         if (row == 0) {
             printf("┐\n");
         } else if (row == self->rows - 1) {
@@ -140,7 +143,11 @@ void Matrix_Print(Matrix* self, const char* specifier) {
         } else {
             printf("│\n");
         }
+#else
+        printf("\n");
+#endif // LA_NO_FANCY_PRINT
     }
+
 
     printf("\n");
 }
