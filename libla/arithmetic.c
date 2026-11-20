@@ -1,8 +1,6 @@
 #include "arithmetic.h"
 
 #include "common.h"
-#include <stdlib.h>
-
 #include "matrix_storage/scalar_matrix.h"
 
 Matrix Matrix_Add(Matrix a, Matrix b) {
