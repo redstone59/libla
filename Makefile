@@ -7,8 +7,14 @@ FILES=./libla/matrix.c ./libla/arithmetic.c ${MATRIX_STORAGE_FILES} ${DA_FILES}
 
 main: ${FILES}
 	${CC} ${CFLAGS} -o main main.c ${FILES}
-	mv main ./bin
+	@mv main ./bin
 
 debug: ${FILES}
 	${CC} ${CFLAGS} -ggdb -fsanitize=address -o main main.c ${FILES}
-	mv main ./bin
+	@mv main ./bin
+
+so: ${FILES}
+# TODO: do metaprogramming so then it also automatically creates the header file
+#       better yet, turn it into a header-only library. that would be cool.
+	${CC} ${CFLAGS} -shared -o libla.so -fPIC ${FILES}
+	@mv libla.so ./bin
