@@ -125,14 +125,13 @@ void Matrix_Print(Matrix* self, const char* specifier) {
 #endif // LA_NO_FANCY_PRINT
 
         for (int col = 0; col < self->cols; col++) {
-            int length = snprintf(
+            snprintf(
                 cellStr, 
                 LA_MATRIX_PRINT_MAX_LEN, 
                 specifier, 
                 self->methods.GetCell(self, row, col)
             );
-            // how delightfully disgusting
-            printf("%-*s%s ", longestInColumn[col] - length, "", cellStr);
+            printf("%*s ", longestInColumn[col], cellStr);
         }
         
 #ifndef LA_NO_FANCY_PRINT
