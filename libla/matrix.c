@@ -109,20 +109,20 @@ void Matrix_Print(Matrix* self, const char* specifier) {
         }
     }
 
-    // Print matrix elements and surrounding box characters.
+#ifndef LA_NO_FANCY_PRINT
+    printf("┌ ");
+    for (int col = 0; col < self->cols; col++) {
+        printf("%*s ", longestInColumn[col], "");
+    }
+    printf("┐\n");
+#endif // LA_NO_FANCY_PRINT
+    
+    // Print matrix elements
     for (int row = 0; row < self->rows; row++) {
         char cellStr[LA_MATRIX_PRINT_MAX_LEN];
-
 #ifndef LA_NO_FANCY_PRINT
-        if (row == 0) {
-            printf("┌ ");
-        } else if (row == self->rows - 1) {
-            printf("└ ");
-        } else {
-            printf("│ ");
-        }
-#endif // LA_NO_FANCY_PRINT
-
+        printf("│ ");
+#endif
         for (int col = 0; col < self->cols; col++) {
             snprintf(
                 cellStr, 
@@ -132,19 +132,20 @@ void Matrix_Print(Matrix* self, const char* specifier) {
             );
             printf("%*s ", longestInColumn[col], cellStr);
         }
-        
 #ifndef LA_NO_FANCY_PRINT
-        if (row == 0) {
-            printf("┐\n");
-        } else if (row == self->rows - 1) {
-            printf("┘\n");
-        } else {
-            printf("│\n");
-        }
+        printf("│\n");
 #else
-        printf("\n");
+        printf("\n");   
 #endif // LA_NO_FANCY_PRINT
     }
+
+#ifndef LA_NO_FANCY_PRINT
+    printf("└ ");
+    for (int col = 0; col < self->cols; col++) {
+        printf("%*s ", longestInColumn[col], "");
+    }
+    printf("┘\n");
+#endif // LA_NO_FANCY_PRINT
 
     printf("\n");
 }

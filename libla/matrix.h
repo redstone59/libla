@@ -43,7 +43,6 @@ struct Matrix {
     MatrixVTable *methods;
 };
 
-
 Matrix Matrix_New(uint64_t rows, uint64_t cols, float* cells);
 void Matrix_Destroy(Matrix* self);
 
