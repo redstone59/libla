@@ -31,7 +31,7 @@ DynamicArray DynamicArray_New(size_t capacity) {
     };
 }
 
-void DynamicArray_LA_FREE(DynamicArray* self) {
+void DynamicArray_Free(DynamicArray* self) {
     LA_FREE(self->elements);
     *self = (DynamicArray) {
         .elements = NULL,
