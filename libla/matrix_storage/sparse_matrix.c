@@ -3,16 +3,25 @@
 #include <stdio.h>
 #include "../common.h"
 
+#define LA_SPARSE_ROW_VEC_INDEX 0
+#define LA_SPARSE_COL_VEC_INDEX 1
+#define LA_SPARSE_VAL_VEC_INDEX 2
+
+static void SparseMatrix__GetVecs(Matrix *self, DynamicArray **rowVec, DynamicArray **colVec, DynamicArray **valVec) {
+    *rowVec = &self->cells.asArrays[LA_SPARSE_ROW_VEC_INDEX];
+    *colVec = &self->cells.asArrays[LA_SPARSE_COL_VEC_INDEX];
+    *valVec = &self->cells.asArrays[LA_SPARSE_VAL_VEC_INDEX];
+}
+
 static float SparseMatrix_GetCell(Matrix *self, uint64_t row, uint64_t col) {
-    DynamicArray rowVec = self->cells.asArrays[0];
-    DynamicArray colVec = self->cells.asArrays[1];
-    DynamicArray valVec = self->cells.asArrays[2];
+    DynamicArray *rowVec, *colVec, *valVec;
+    SparseMatrix__GetVecs(self, &rowVec, &colVec, &valVec);
 
     // TODO: change to binary search/other search alg
     //       for speed
     for (int i = 0; i < self->count; i++) {
-        if (DynamicArray_Get(&rowVec, i) == row && DynamicArray_Get(&colVec, i) == col) {
-            return DynamicArray_Get(&valVec, i);
+        if (DynamicArray_Get(rowVec, i) == row && DynamicArray_Get(colVec, i) == col) {
+            return DynamicArray_Get(valVec, i);
         }
     }
 
@@ -26,9 +35,8 @@ static float SparseMatrix_GetAtIndex(Matrix *self, uint64_t index) {
 }
 
 static void SparseMatrix_SetCell(Matrix *self, uint64_t row, uint64_t col, float value) {
-    DynamicArray *rowVec = &self->cells.asArrays[0];
-    DynamicArray *colVec = &self->cells.asArrays[1];
-    DynamicArray *valVec = &self->cells.asArrays[2];
+    DynamicArray *rowVec, *colVec, *valVec;
+    SparseMatrix__GetVecs(self, &rowVec, &colVec, &valVec);
 
     // TODO: change to binary search/other search alg
     //       for speed
@@ -79,13 +87,14 @@ static MatrixVTable sparseMethods = {
 
 Matrix SparseMatrix_New(uint64_t rows, uint64_t cols, float **vecs, size_t nz, size_t capacity)
 {
+    // NOTE: maybe pull out this initialisation code into own function SparseMatrix__InitVecs()?
     DynamicArray rowArr = DynamicArray_New(capacity);
     DynamicArray colArr = DynamicArray_New(capacity);
     DynamicArray valArr = DynamicArray_New(capacity);
 
-    float *rowVec = vecs[0];
-    float *colVec = vecs[1];
-    float *valVec = vecs[2];
+    float *rowVec = vecs[LA_SPARSE_ROW_VEC_INDEX];
+    float *colVec = vecs[LA_SPARSE_COL_VEC_INDEX];
+    float *valVec = vecs[LA_SPARSE_VAL_VEC_INDEX];
 
     for (size_t i = 0; i < nz; i++) {
         DynamicArray_Append(&rowArr, rowVec[i]);
@@ -94,9 +103,9 @@ Matrix SparseMatrix_New(uint64_t rows, uint64_t cols, float **vecs, size_t nz, s
     }
 
     DynamicArray *arrays = LA_ALLOC(3 * sizeof(DynamicArray));
-    arrays[0] = rowArr;
-    arrays[1] = colArr;
-    arrays[2] = valArr;
+    arrays[LA_SPARSE_ROW_VEC_INDEX] = rowArr;
+    arrays[LA_SPARSE_COL_VEC_INDEX] = colArr;
+    arrays[LA_SPARSE_VAL_VEC_INDEX] = valArr;
 
     return (Matrix){
         .rows = rows,

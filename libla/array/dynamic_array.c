@@ -98,12 +98,14 @@ void DynamicArray_Remove(DynamicArray* self, float value) {
     }
 }
 
+#define DA_SEPARATOR ","
+
 void DynamicArray_Print(DynamicArray* self, const char* specifier) {
     printf("[ ");
     for (size_t i = 0; i < self->count; i++) {
         printf(specifier, DynamicArray_Get(self, i));
         if (i != self->count - 1) {
-            printf(", ");
+            printf(DA_SEPARATOR " ");
         }
     }
     printf(" ] (%zu/%zu)\n", self->count, self->capacity);

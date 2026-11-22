@@ -90,6 +90,12 @@ uint64_t Matrix_CellToIndex(Matrix* self, uint64_t row, uint64_t col) {
 }
 
 #define LA_MATRIX_PRINT_MAX_LEN 256
+#define LA_FANCY_PRINT_TOPLEFT "┌"
+#define LA_FANCY_PRINT_TOPRIGHT "┐"
+#define LA_FANCY_PRINT_BOTTOMLEFT "└"
+#define LA_FANCY_PRINT_BOTTOMRIGHT "┘"
+#define LA_FANCY_PRINT_PIPE "│"
+
 void Matrix_Print(Matrix* self, const char* specifier) {
     // Determine longest string inside one cell.
     int longestInColumn[self->cols];
@@ -110,18 +116,18 @@ void Matrix_Print(Matrix* self, const char* specifier) {
     }
 
 #ifndef LA_NO_FANCY_PRINT
-    printf("┌ ");
+    printf(LA_FANCY_PRINT_TOPLEFT " ");
     for (int col = 0; col < self->cols; col++) {
         printf("%*s ", longestInColumn[col], "");
     }
-    printf("┐\n");
+    printf(LA_FANCY_PRINT_TOPRIGHT "\n");
 #endif // LA_NO_FANCY_PRINT
     
     // Print matrix elements
     for (int row = 0; row < self->rows; row++) {
         char cellStr[LA_MATRIX_PRINT_MAX_LEN];
 #ifndef LA_NO_FANCY_PRINT
-        printf("│ ");
+        printf(LA_FANCY_PRINT_PIPE " ");
 #endif
         for (int col = 0; col < self->cols; col++) {
             snprintf(
@@ -133,18 +139,18 @@ void Matrix_Print(Matrix* self, const char* specifier) {
             printf("%*s ", longestInColumn[col], cellStr);
         }
 #ifndef LA_NO_FANCY_PRINT
-        printf("│\n");
+        printf(LA_FANCY_PRINT_PIPE "\n");
 #else
         printf("\n");   
 #endif // LA_NO_FANCY_PRINT
     }
 
 #ifndef LA_NO_FANCY_PRINT
-    printf("└ ");
+    printf(LA_FANCY_PRINT_BOTTOMLEFT " ");
     for (int col = 0; col < self->cols; col++) {
         printf("%*s ", longestInColumn[col], "");
     }
-    printf("┘\n");
+    printf(LA_FANCY_PRINT_BOTTOMRIGHT "\n");
 #endif // LA_NO_FANCY_PRINT
 
     printf("\n");
