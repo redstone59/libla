@@ -70,18 +70,26 @@ void Matrix_SetCol(Matrix *self, uint64_t col, Matrix values) {
 }
 
 void Matrix_SwapRows(Matrix *self, uint64_t rowA, uint64_t rowB) {
-    not_implemented;
-}
+    panic_if(rowA < 0 || rowA >= self->rows, "Attempted to index row outside of matrix bounds.");
+    panic_if(rowB < 0 || rowB >= self->rows, "Attempted to index row outside of matrix bounds.");
 
-void Matrix_SwapCols(Matrix *self, uint64_t colA, uint64_t colB) {
-    not_implemented;
+    if (rowA == rowB) {
+        return;
+    }
+
+    self->methods->SwapRows(self, rowA, rowB);
 }
 
 void Matrix_MultiplyRow(Matrix *self, uint64_t row, float multiplier) {
+    panic_if(row < 0 || row >= self->rows, "Attempted to index row outside of matrix bounds.");
+    
     not_implemented;
 }
 
 void Matrix_AddMultipleOfRow(Matrix *self, uint64_t rowA, uint64_t rowB, float multiplier) {
+    panic_if(rowA < 0 || rowA >= self->rows, "Attempted to index row outside of matrix bounds.");
+    panic_if(rowB < 0 || rowB >= self->rows, "Attempted to index row outside of matrix bounds.");
+
     not_implemented;
 }
 

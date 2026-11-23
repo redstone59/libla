@@ -78,11 +78,33 @@ static void SparseMatrix_SetIndex(Matrix *self, uint64_t index, float value) {
     SparseMatrix_SetCell(self, row, col, value);
 }
 
+static void SparseMatrix_SwapRows(Matrix *self, uint64_t rowA, uint64_t rowB) {
+    DynamicArray *rowVec, *colVec, *valVec;
+    SparseMatrix__GetVecs(self, &rowVec, &colVec, &valVec);
+
+    for (size_t i = 0; i < rowVec->count; i++) {
+        float row = DynamicArray_Get(rowVec, i);
+        if (row == rowA) {
+            DynamicArray_Set(rowVec, i, rowB);
+            continue;
+        }
+
+        if (row == rowB) {
+            DynamicArray_Set(rowVec, i, rowA);
+            continue;
+        }
+    }
+
+    // TODO: sort row, col, val vec to be in row, column order
+}
+
 static MatrixVTable sparseMethods = {
     .GetAtIndex = SparseMatrix_GetAtIndex,
     .GetCell = SparseMatrix_GetCell,
     .SetIndex = SparseMatrix_SetIndex,
-    .SetCell = SparseMatrix_SetCell
+    .SetCell = SparseMatrix_SetCell,
+
+    .SwapRows = SparseMatrix_SwapRows
 };
 
 Matrix SparseMatrix_New(uint64_t rows, uint64_t cols, float **vecs, size_t nz, size_t capacity)

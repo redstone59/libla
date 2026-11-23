@@ -24,6 +24,10 @@ typedef struct MatrixVTable {
     float (*GetCell)(Matrix *self, uint64_t row, uint64_t col);
     void (*SetIndex)(Matrix *self, uint64_t index, float value);
     void (*SetCell)(Matrix *self, uint64_t row, uint64_t col, float value);
+
+    void (*SwapRows)(Matrix *self, uint64_t rowA, uint64_t rowB);
+    // void (*MultiplyRow)(Matrix *self, uint64_t row, float multiplier);
+    // void (*AddMultipleOfRow)(Matrix *self, uint64_t rowA, uint64_t rowB, float multiplier);
 } MatrixVTable;
 
 struct Matrix {
@@ -58,7 +62,7 @@ void Matrix_SetCol(Matrix *self, uint64_t col, Matrix values);
 
 // TODO: pull out into vtable for each matrix type (18/11/26)
 void Matrix_SwapRows(Matrix *self, uint64_t rowA, uint64_t rowB);
-void Matrix_SwapCols(Matrix *self, uint64_t colA, uint64_t colB);
+// void Matrix_SwapCols(Matrix *self, uint64_t colA, uint64_t colB);
 void Matrix_MultiplyRow(Matrix *self, uint64_t row, float multiplier);
 /** `rowA` = `rowA` + `multiplier` * `rowB` */
 void Matrix_AddMultipleOfRow(Matrix *self, uint64_t rowA, uint64_t rowB, float multiplier);
