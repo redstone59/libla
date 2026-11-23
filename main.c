@@ -4,6 +4,8 @@
 #include "libla/arithmetic.h"
 #include "libla/matrix_types.h"
 
+#include "libla/algorithms/algorithms.h"
+#include "libla/algorithms/solvers/substitutions.h"
 
 int main(int argc, char** argv) {
     Matrix a = Matrix_New(3, 4, (float[12]) {
@@ -21,11 +23,31 @@ int main(int argc, char** argv) {
     float val[8] = { 10, 20, 30, 40, 50, 60, 70, 80 };
     float *sparse[3] = { row, col, val };
     
-    Matrix b = SparseMatrix_New(4, 6, sparse, 8, 16);
+    Matrix s = SparseMatrix_New(4, 6, sparse, 8, 16);
+    Matrix_Print(&s, "%.0f");
+
+    GaussianElimination(&s);
+    Matrix_Print(&s, "%.0f");
+
+    Matrix u = Matrix_New(3, 3, (float[9]) {
+        1, 1, 1,
+        0, 1, 1,
+        0, 0, 1
+    });
+    Matrix b = Matrix_New(3, 1, (float[3]) {
+        6,
+        3,
+        1
+    });
+    Matrix_Print(&u, "%.0f");
     Matrix_Print(&b, "%.0f");
 
-    Matrix_AddMultipleOfRow(&b, -3 / 2.f, 0, 1);
-    Matrix_Print(&b, "%.0f");
+    Matrix x = BackwardSubstitution(&u, &b);
+    Matrix_Print(&x, "%.2f");
+
+    Matrix bReconstructed = Matrix_Multiply(u, x);
+    Matrix_Print(&bReconstructed, "%.2f");
+
 
     return 0;
 }

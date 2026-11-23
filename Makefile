@@ -5,7 +5,7 @@ DA_FILES=./libla/array/dynamic_array.c
 ALGORITHM_FILES=./libla/algorithms/gaussian_elimination.c
 SOLVER_FILES=./libla/algorithms/solvers/substitutions.c
 MATRIX_STORAGE_FILES=./libla/matrix_storage/full_matrix.c ./libla/matrix_storage/scalar_matrix.c ./libla/matrix_storage/sparse_matrix.c
-FILES=./libla/matrix.c ./libla/arithmetic.c ${MATRIX_STORAGE_FILES} ${DA_FILES} ${ALGORITHM_FILES}
+FILES=./libla/matrix.c ./libla/arithmetic.c ${MATRIX_STORAGE_FILES} ${DA_FILES} ${ALGORITHM_FILES} ${SOLVER_FILES}
 
 main: ${FILES}
 	${CC} ${CFLAGS} -o main main.c ${FILES}
