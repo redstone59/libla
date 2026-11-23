@@ -16,11 +16,17 @@ static void ScalarMatrix_SetCell(Matrix *self, uint64_t row, uint64_t col, float
     return;
 }
 
+static void ScalarMatrix_SwapRows(Matrix *self, uint64_t rowA, uint64_t rowB) {
+    return;
+}
+
 static MatrixVTable scalarMethods = (MatrixVTable) {
     .GetAtIndex = ScalarMatrix_GetAtIndex,
     .SetIndex = ScalarMatrix_SetIndex,
     .GetCell = ScalarMatrix_GetCell,
-    .SetCell = ScalarMatrix_SetCell
+    .SetCell = ScalarMatrix_SetCell,
+
+    .SwapRows = ScalarMatrix_SwapRows
 };
 
 Matrix ScalarMatrix_New(uint64_t rows, uint64_t cols, float *value) {
