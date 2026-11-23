@@ -11,8 +11,9 @@ Matrix Matrix_New(uint64_t rows, uint64_t cols, float* cells) {
 }
 
 Matrix Matrix_NewEmpty(uint64_t rows, uint64_t cols) {
-    float *cells = LA_ALLOC(rows * cols * sizeof(float));
-    memset(cells, 0, sizeof(cells));
+    size_t toAllocate = rows * cols * sizeof(float);
+    float *cells = LA_ALLOC(toAllocate);
+    memset(cells, 0, toAllocate);
     return Matrix_New(rows, cols, cells);
 }
 
