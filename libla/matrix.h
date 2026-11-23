@@ -27,7 +27,7 @@ typedef struct MatrixVTable {
 
     void (*SwapRows)(Matrix *self, uint64_t rowA, uint64_t rowB);
     // void (*MultiplyRow)(Matrix *self, uint64_t row, float multiplier);
-    // void (*AddMultipleOfRow)(Matrix *self, uint64_t rowA, uint64_t rowB, float multiplier);
+    // void (*AddMultipleOfRow)(Matrix *self, float multiplier, uint64_t rowA, uint64_t rowB);
 } MatrixVTable;
 
 struct Matrix {
@@ -64,8 +64,8 @@ void Matrix_SetCol(Matrix *self, uint64_t col, Matrix values);
 void Matrix_SwapRows(Matrix *self, uint64_t rowA, uint64_t rowB);
 // void Matrix_SwapCols(Matrix *self, uint64_t colA, uint64_t colB);
 void Matrix_MultiplyRow(Matrix *self, uint64_t row, float multiplier);
-/** `rowA` = `rowA` + `multiplier` * `rowB` */
-void Matrix_AddMultipleOfRow(Matrix *self, uint64_t rowA, uint64_t rowB, float multiplier);
+/** `rowB` = `rowB` + `multiplier` * `rowA` */
+void Matrix_AddMultipleOfRow(Matrix *self, float multiplier, uint64_t rowA, uint64_t rowB);
 
 uint64_t Matrix_CellToIndex(Matrix* self, uint64_t row, uint64_t col);
 void Matrix_Print(Matrix* self, const char* specifier);

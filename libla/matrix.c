@@ -83,14 +83,30 @@ void Matrix_SwapRows(Matrix *self, uint64_t rowA, uint64_t rowB) {
 void Matrix_MultiplyRow(Matrix *self, uint64_t row, float multiplier) {
     panic_if(row < 0 || row >= self->rows, "Attempted to index row outside of matrix bounds.");
     
-    not_implemented;
+    for (size_t i = 0; i < self->cols; i++) {
+        Matrix_SetCell(
+            self,
+            row, i, 
+            Matrix_GetCell(self, row, i) * multiplier
+        );
+    }
 }
 
-void Matrix_AddMultipleOfRow(Matrix *self, uint64_t rowA, uint64_t rowB, float multiplier) {
+void Matrix_AddMultipleOfRow(Matrix *self, float multiplier, uint64_t rowA, uint64_t rowB) {
     panic_if(rowA < 0 || rowA >= self->rows, "Attempted to index row outside of matrix bounds.");
     panic_if(rowB < 0 || rowB >= self->rows, "Attempted to index row outside of matrix bounds.");
 
-    not_implemented;
+    if (multiplier == 0) {
+        return;
+    }
+
+    for (size_t i = 0; i < self->cols; i++) {
+        Matrix_SetCell(
+            self,
+            rowB, i, 
+            Matrix_GetCell(self, rowB, i) + Matrix_GetCell(self, rowA, i) * multiplier
+        );
+    }
 }
 
 uint64_t Matrix_CellToIndex(Matrix* self, uint64_t row, uint64_t col) {
