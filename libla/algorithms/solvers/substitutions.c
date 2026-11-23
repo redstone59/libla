@@ -21,7 +21,7 @@ Matrix ForwardSubstitution(Matrix *a, Matrix *b) {
     return x;
 }
 
-Matrix ForwardSubstitutionAugmented(Matrix *ab) {
+Matrix ForwardSubstitutionAugmented(Matrix *ab, size_t numVectors) {
     not_implemented;
 }
 
@@ -46,6 +46,6 @@ Matrix BackwardSubstitution(Matrix *a, Matrix *b) {
     return x;
 }
 
-Matrix BackwardSubstitutionAugmented(Matrix *ab) {
+Matrix BackwardSubstitutionAugmented(Matrix *ab, size_t numVectors) {
     not_implemented;
 }
