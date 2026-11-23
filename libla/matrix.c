@@ -10,6 +10,12 @@ Matrix Matrix_New(uint64_t rows, uint64_t cols, float* cells) {
     return FullMatrix_New(rows, cols, cells);
 }
 
+Matrix Matrix_NewEmpty(uint64_t rows, uint64_t cols) {
+    float *cells = LA_MALLOC(rows * cols * sizeof(float));
+    memset(cells, 0, sizeof(cells));
+    return Matrix_New(rows, cols, cells);
+}
+
 void Matrix_Destroy(Matrix* self) {
     LA_FREE(&self->cells.asArrays);
     self->cells.asArrays = NULL;

@@ -48,7 +48,8 @@ struct Matrix {
 };
 
 Matrix Matrix_New(uint64_t rows, uint64_t cols, float* cells);
-void Matrix_Destroy(Matrix* self);
+Matrix Matrix_NewEmpty(uint64_t rows, uint64_t cols);
+void Matrix_Destroy(Matrix* self); // TODO: properly implement
 
 float Matrix_GetAtIndex(Matrix *self, uint64_t index);
 float Matrix_GetCell(Matrix *self, uint64_t row, uint64_t col);
