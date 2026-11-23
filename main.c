@@ -48,6 +48,5 @@ int main(int argc, char** argv) {
     Matrix bReconstructed = Matrix_Multiply(u, x);
     Matrix_Print(&bReconstructed, "%.2f");
 
-
     return 0;
 }

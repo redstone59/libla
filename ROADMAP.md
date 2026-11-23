@@ -34,7 +34,7 @@
 
 - **Algorithms**
     - [x] Gaussian Elimination
-    - [x] Gauss-Jordan Elimination
+    - [ ] Gauss-Jordan Elimination
     - [x] Forward substitution
     - [x] Backward substitution
     - [ ] Matrix decompositions
