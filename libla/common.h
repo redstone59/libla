@@ -25,4 +25,6 @@
 #   define LA_REALLOC realloc
 #endif
 
+#define LA_ABS(x) ((x) < 0 ? -(x) : (x))
+
 #endif // LA_COMMON_H_

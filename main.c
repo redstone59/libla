@@ -4,16 +4,16 @@
 #include "libla/arithmetic.h"
 #include "libla/matrix_types.h"
 
+
 int main(int argc, char** argv) {
-    Matrix a = Matrix_New(4, 4, (float[16]) {
-        2, 3, 4, 5, 
-        1, 0, 0, 0,
-        3, 1, 4, 1,
-        2, 7, 1, 8
+    Matrix a = Matrix_New(3, 4, (float[12]) {
+         2,  1, -1,   8, 
+        -3, -1,  2, -11,
+        -2,  1,  2,  -3,
     });
     Matrix_Print(&a, "%.0f");
 
-    Matrix_SwapRows(&a, 1, 3);
+    GaussianElimination(&a);
     Matrix_Print(&a, "%.0f");
 
     float row[8] = {  0,  0,  1,  1,  2,  2,  2,  3 };
@@ -24,7 +24,7 @@ int main(int argc, char** argv) {
     Matrix b = SparseMatrix_New(4, 6, sparse, 8, 16);
     Matrix_Print(&b, "%.0f");
 
-    Matrix_SwapRows(&b, 1, 2);
+    Matrix_AddMultipleOfRow(&b, -3 / 2.f, 0, 1);
     Matrix_Print(&b, "%.0f");
 
     return 0;
