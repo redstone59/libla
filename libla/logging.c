@@ -1,7 +1,7 @@
 #include "logging.h"
 #include <time.h>
 
-#ifndef LA_NO_COLOUR
+#ifndef LA_LOG_NO_COLOUR
 #   define ASCII_ESC(x) "\x1b[" x "m"
 #else
 #   define ASCII_ESC(x)

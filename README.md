@@ -56,6 +56,8 @@ As long as you don't use generative artificial intelligence tools, then I'll tak
 
 - `LA_NO_ASSERT` (`./libla/common.h`): If this macro is defined, all assertions are removed.
 - `LA_NO_FANCY_PRINT` (`./libla/matrix.c`): If this macro is defined, `Matrix_Print()` will not print the braces.
+- `LA_LOG_THRESHOLD` (`./libla/logging.h`): Defines the minimum level a log needs to be to be printed. Defaults to `LA_LOGLEVEL_ERR`.
+- `LA_LOG_NO_COLOUR` (`./libla/logging.c`): Removes ASCII escape sequences from logs.
 
 ## Initialising the directory
 
