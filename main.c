@@ -5,7 +5,6 @@
 #include "libla/matrix_types.h"
 
 #include "libla/algorithms/algorithms.h"
-#include "libla/algorithms/solvers/substitutions.h"
 
 int main(int argc, char** argv) {
     Matrix a = Matrix_New(3, 4, (float[12]) {

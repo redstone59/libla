@@ -34,6 +34,8 @@ static void FullMatrix_SwapRows(Matrix *self, uint64_t rowA, uint64_t rowB) {
 }
 
 static MatrixVTable fullMethods = (MatrixVTable) {
+    .Destroy = Matrix_DestroyFloatVec,
+
     .GetAtIndex = FullMatrix_GetAtIndex,
     .GetCell = FullMatrix_GetCell,
     .SetIndex = FullMatrix_SetIndex,

@@ -21,6 +21,8 @@ static void ScalarMatrix_SwapRows(Matrix *self, uint64_t rowA, uint64_t rowB) {
 }
 
 static MatrixVTable scalarMethods = (MatrixVTable) {
+    .Destroy = Matrix_DestroyFloatVec,
+    
     .GetAtIndex = ScalarMatrix_GetAtIndex,
     .SetIndex = ScalarMatrix_SetIndex,
     .GetCell = ScalarMatrix_GetCell,

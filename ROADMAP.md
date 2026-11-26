@@ -30,6 +30,7 @@
         - [ ] 1-norm (maximum absolute column sum)
         - [ ] 2-norm (largest singular value)
         - [ ] infinity-norm (maximum absolute row sum)
+        - [ ] Frobenius norm
 
 
 - **Algorithms**
@@ -48,4 +49,6 @@
 - **Other**
     - [ ] Figure/image generation
     - [ ] Testing codebase with `make test`
+    - [ ] Some way to test if this shit is good on other platforms
     - [ ] Build into stb-style single-header library(?)
+    - [ ] Better logging system (i.e. warn floating point error, etc.)

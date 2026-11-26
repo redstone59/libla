@@ -20,6 +20,8 @@ typedef enum MatrixKind {
 } MatrixKind;
 
 typedef struct MatrixVTable {
+    void (*Destroy)(Matrix *self);
+
     float (*GetAtIndex)(Matrix *self, uint64_t index);
     float (*GetCell)(Matrix *self, uint64_t row, uint64_t col);
     void (*SetIndex)(Matrix *self, uint64_t index, float value);
@@ -67,6 +69,9 @@ Matrix Matrix_New(uint64_t rows, uint64_t cols, float* cells);
  * @returns The `Matrix` with the provided size. This matrix is allocated on the heap.
  */
 Matrix Matrix_NewEmpty(uint64_t rows, uint64_t cols);
+
+void Matrix_DestroyFloatVec(Matrix *self);
+void Matrix_DestroyArray(Matrix *self);
 
 /**
  * Frees a matrix.
