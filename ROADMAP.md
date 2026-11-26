@@ -54,4 +54,6 @@
         - [ ] Benchmark system
     - [ ] Some way to test if this shit is good on other platforms
     - [ ] Build into stb-style single-header library(?)
-    - [ ] Better logging system (i.e. warn floating point error, etc.)
+    - [x] Logging system (i.e. warn floating point error, etc.)
+        - [ ] Write log to other file streams other than `stdout`
+        - [ ] Pull outside of `libla` directory
