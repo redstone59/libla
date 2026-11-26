@@ -20,9 +20,7 @@ int main(int argc, char** argv) {
 
     GaussianElimination(&a);
     Matrix_Print(&a, "%.0f");
-
-    GC_Sweep();
-
+    
     float row[8] = {  0,  0,  1,  1,  2,  2,  2,  3 };
     float col[8] = {  0,  1,  1,  3,  2,  3,  4,  5 };
     float val[8] = { 10, 20, 30, 40, 50, 60, 70, 80 };
@@ -30,10 +28,10 @@ int main(int argc, char** argv) {
     
     Matrix s = SparseMatrix_New(4, 6, sparse, 8, 16);
     Matrix_Print(&s, "%.0f");
-
+    
     GaussianElimination(&s);
     Matrix_Print(&s, "%.0f");
-
+    
     Matrix u = Matrix_New(3, 3, (float[9]) {
         1, 1, 1,
         0, 1, 1,
@@ -46,15 +44,32 @@ int main(int argc, char** argv) {
     });
     Matrix_Print(&u, "%.0f");
     Matrix_Print(&b, "%.0f");
-
+    
     Matrix x = BackwardSubstitution(&u, &b);
     Matrix_Print(&x, "%.2f");
-
+    
     Matrix bReconstructed = Matrix_Multiply(u, x);
     Matrix_Print(&bReconstructed, "%.2f");
-
+    
+    GC_Sweep();
+    
     Matrix_Destroy(&s);
 
+    Matrix insuranceP = Matrix_New(5, 5, (float[25]) {
+         1 / 4.f,  3 / 4.f,        0,       0,       0,
+         1 / 4.f,        0,  3 / 4.f,       0,       0,
+        1 / 16.f, 3 / 16.f,        0, 3 / 4.f,       0,
+        1 / 16.f,        0, 3 / 16.f,       0, 3 / 4.f,
+        1 / 16.f,        0, 3 / 16.f,       0, 3 / 4.f
+    });
+
+    Matrix pn = insuranceP;
+    for (int i = 0; i < 200; i++) {
+        pn = Matrix_Multiply(pn, insuranceP);
+    }
+    Matrix_Print(&pn, "%.4f");
+    GC_Sweep();
+    
     GC_Destroy();
 
     return 0;
