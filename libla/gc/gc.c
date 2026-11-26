@@ -2,8 +2,10 @@
 
 #include <stdio.h>
 #include <stdbool.h>
-#include "allocation_array.h"
+
 #include "../common.h"
+#include "allocation.h"
+#include "allocation_array.h"
 
 static AllocationArray allocs;
 static bool initialised = false;

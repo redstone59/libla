@@ -2,7 +2,6 @@
 #define LA_ALLOCATION_ARRAY_H_
 
 #include <stddef.h>
-#include <stdint.h>
 #include "allocation.h"
 
 typedef struct AllocationArray {

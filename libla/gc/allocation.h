@@ -1,7 +1,6 @@
 #ifndef LA_ALLOCATION_H_
 #define LA_ALLOCATION_H_
 
-#include <stddef.h>
 #include <stdint.h>
 
 typedef enum GCFlagPositions {

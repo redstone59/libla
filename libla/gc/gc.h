@@ -1,7 +1,7 @@
 #ifndef LA_GC_H_
 #define LA_GC_H_
 
-#include "allocation.h"
+#include <stddef.h>
 
 void GC_Init(size_t capacity);
 void GC_Destroy();
