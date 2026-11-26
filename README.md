@@ -57,24 +57,40 @@ As long as you don't use generative artificial intelligence tools, then I'll tak
 - `LA_NO_ASSERT` (`./libla/common.h`): If this macro is defined, all assertions are removed.
 - `LA_NO_FANCY_PRINT` (`./libla/matrix.c`): If this macro is defined, `Matrix_Print()` will not print the braces.
 
+## Initialising the directory
+
+```console
+$ make init
+```
+
+This creates two subdirectories that the Makefile compiles into.
+
+## Cleaning
+
+```console
+$ make clean
+```
+
+Removes all files inside of `./bin/` and `./build/`.
+
 ## Building normally
 
-```
-make main
+```console
+$ make main
 ```
 This compiles the library and `main.c` to executable `main`. Useful if you wish to mess around with the library.
 
 ## Building with debug
 
-```
-make debug
+```console
+$ make debug
 ```
 This is the same as `main` but with `gdb` and `-fsanitize=address`.
 
 ## Building as a shared library
 
-```
-make so
+```console
+$ make so
 ```
 
 > [!IMPORTANT]
