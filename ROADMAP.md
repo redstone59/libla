@@ -16,7 +16,7 @@
 - **Memory**
     - [x] Ability to decouple from `libc` memory functions
     - [x] Use of arenas or a garbage collector to prevent leaks
-        - [ ] Potentially change garbage collector to hashmap for speed (if it is actually faster)
+        - [ ] Potentially change garbage collector to hashmap/fat pointer for speed (if it is actually faster)
 
 - **Matrix operations**
     - [x] Basic matrix-matrix arithmetic
