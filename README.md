@@ -28,6 +28,7 @@ int main(int argc, char** argv) {
 - Basic matrix arithmetic between matrix and matrix and matrix and scalar.
 - Elementary row operations on matrices
 - Gaussian elimination, backward and forward substitution.
+- Automatic memory management using a garbage collector.
 
 To see future plans, check [the roadmap](ROADMAP.md).
 
@@ -81,4 +82,4 @@ make so
 
 ---
 
-*Last modified: 23/11/26*
+*Last modified: 26/11/26*

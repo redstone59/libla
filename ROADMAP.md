@@ -1,6 +1,6 @@
 # Roadmap for `libla`
 
-*Last updated: 23/11/26*
+*Last updated: 26/11/26*
 
 - **Data**
     - [ ] More comprehensive matrix storage
@@ -16,6 +16,7 @@
 - **Memory**
     - [x] Ability to decouple from `libc` memory functions
     - [x] Use of arenas or a garbage collector to prevent leaks
+        - [ ] Potentially change garbage collector to hashmap for speed (if it is actually faster)
 
 - **Matrix operations**
     - [x] Basic matrix-matrix arithmetic
@@ -31,7 +32,7 @@
         - [ ] 2-norm (largest singular value)
         - [ ] infinity-norm (maximum absolute row sum)
         - [ ] Frobenius norm
-
+    - [ ] Matrix augmentation
 
 - **Algorithms**
     - [x] Gaussian Elimination
@@ -45,10 +46,12 @@
         - [ ] Cholesky decomposition GG^T
         - [ ] Eigendecomposition VDV^-1
         - [ ] Singular value decomposition
+    - [ ] Generalised matrix linear equation solver (a la MATLAB's `x = A \ b`)
 
 - **Other**
     - [ ] Figure/image generation
     - [ ] Testing codebase with `make test`
+        - [ ] Benchmark system
     - [ ] Some way to test if this shit is good on other platforms
     - [ ] Build into stb-style single-header library(?)
     - [ ] Better logging system (i.e. warn floating point error, etc.)
