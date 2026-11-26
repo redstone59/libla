@@ -40,11 +40,11 @@ shared: ${FILES}
 # TODO: do metaprogramming so then it also automatically creates the header file
 #       better yet, turn it into a header-only library. that would be cool.
 	${CC} ${CFLAGS} -shared -o ${OBJECT_NAME}.so -fPIC ${FILES}
+	@mv ${OBJECT_NAME}.so ./bin
 
 debug: ${FILES}
 	${CC} ${CFLAGS} -ggdb -fsanitize=address -o main main.c ${FILES} -DLA_LOG_THRESHOLD=LA_LOGLEVEL_DEBUG
 	@mv main ./bin
-	@mv ${OBJECT_NAME}.so ./bin
 
 test:
 	@echo TODO: test
