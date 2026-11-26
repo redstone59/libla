@@ -1,13 +1,14 @@
 #include "arithmetic.h"
 
 #include "common.h"
+#include "gc/gc.h"
 #include "matrix_storage/scalar_matrix.h"
 
 Matrix Matrix_Add(Matrix a, Matrix b) {
     assert(a.rows == b.rows && a.cols == b.cols);
 
     int size = a.rows * a.cols;
-    float *elements = LA_ALLOC(size * sizeof(float));
+    float *elements = GC_Alloc(size * sizeof(float));
     for (int i = 0; i < size; i++) {
         elements[i] = Matrix_GetAtIndex(&a, i) + Matrix_GetAtIndex(&b, i);
     }
@@ -34,7 +35,7 @@ Matrix Matrix_Multiply(Matrix a, Matrix b) {
     assert(a.cols == b.rows);
 
     size_t numElements = a.rows * b.cols;
-    float *elements = LA_ALLOC(numElements * sizeof(float));
+    float *elements = GC_Alloc(numElements * sizeof(float));
 
     // "schoolyard" method of multiplying matrices (O(n^3))
     for (int row = 0; row < a.rows; row++) {
@@ -57,7 +58,7 @@ Matrix Matrix_SubScalar(Matrix a, float scalar) {
 
 Matrix Matrix_MultiplyScalar(Matrix a, float scalar) {
     size_t numElements = a.rows * a.cols;
-    float* elements = LA_ALLOC(numElements * sizeof(float));
+    float* elements = GC_Alloc(numElements * sizeof(float));
     
     // Only loop non-zero elements (if sparse storage)
     for (int i = 0; i < numElements; i++) {
@@ -86,7 +87,7 @@ float Matrix_Det(Matrix self) {
 
 Matrix Matrix_Transpose(Matrix a) {
     size_t numElements = a.rows * a.cols;
-    float* elements = LA_ALLOC(numElements * sizeof(float));
+    float* elements = GC_Alloc(numElements * sizeof(float));
     Matrix transposed = Matrix_New(a.cols, a.rows, elements);
 
     for (uint64_t row = 0; row < a.rows; row++) {

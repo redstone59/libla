@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "common.h"
+#include "gc/gc.h"
 
 #include "matrix_storage/full_matrix.h"
 
@@ -12,13 +13,13 @@ Matrix Matrix_New(uint64_t rows, uint64_t cols, float* cells) {
 
 Matrix Matrix_NewEmpty(uint64_t rows, uint64_t cols) {
     size_t toAllocate = rows * cols * sizeof(float);
-    float *cells = LA_ALLOC(toAllocate);
+    float *cells = GC_Alloc(toAllocate);
     memset(cells, 0, toAllocate);
     return Matrix_New(rows, cols, cells);
 }
 
 void Matrix_DestroyFloatVec(Matrix *self) {
-    LA_FREE(&self->cells.asFloatVec);
+    GC_Free(&self->cells.asFloatVec);
     self->cells.asFloatVec = NULL;
 }
 
@@ -64,7 +65,7 @@ void Matrix_SetCell(Matrix *self, uint64_t row, uint64_t col, float value) {
 }
 
 Matrix Matrix_GetRow(Matrix *self, uint64_t row) {
-    float *cells = LA_ALLOC(self->cols * sizeof(float));
+    float *cells = GC_Alloc(self->cols * sizeof(float));
     
     for (int i = 0; i < self->cols; i++) {
         cells[i] = Matrix_GetCell(self, i, row);
@@ -74,7 +75,7 @@ Matrix Matrix_GetRow(Matrix *self, uint64_t row) {
 }
 
 Matrix Matrix_GetCol(Matrix *self, uint64_t col) {
-    float *cells = LA_ALLOC(self->rows * sizeof(float));
+    float *cells = GC_Alloc(self->rows * sizeof(float));
     
     for (int i = 0; i < self->rows; i++) {
         cells[i] = Matrix_GetCell(self, col, i);

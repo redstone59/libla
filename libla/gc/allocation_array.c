@@ -47,6 +47,25 @@ GCAllocation AllocationArray_Get(AllocationArray* self, size_t index) {
     return self->elements[index];
 }
 
+GCAllocation *AllocationArray_GetReference(AllocationArray* self, size_t index) {
+    panic_if(self->elements == NULL, "Attempted to get on freed dynamic array.");
+    panic_if(index < 0 || index >= self->count, "Attempted to get outside of bounds of array.");
+
+    return &self->elements[index];
+}
+
+GCAllocation *AllocationArray_GetFromPointer(AllocationArray* self, void *ptr) {
+    for (size_t i = 0; i < self->count; i++) {
+        GCAllocation *alloc = AllocationArray_GetReference(self, i);
+        if (alloc->ptr != ptr) {
+            continue;
+        }
+        return alloc;
+    }
+
+    return NULL;
+}
+
 void AllocationArray_Set(AllocationArray* self, size_t index, GCAllocation value) {
     panic_if(self->elements == NULL, "Attempted to set on freed dynamic array.");
     panic_if(index < 0 || index >= self->count, "Attempted to set outside of bounds of array.");

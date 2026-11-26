@@ -3,6 +3,7 @@
 #include "../common.h"
 #include <stdio.h>
 #include <string.h>
+#include "../gc/gc.h"
 
 #define DA_MIN_CAPACITY 32
 
@@ -17,7 +18,7 @@ static void DynamicArray__Resize(DynamicArray* self, size_t toFit) {
     }
 
     *self = (DynamicArray) {
-        .elements = LA_REALLOC(self->elements, newSize * sizeof(float)),
+        .elements = GC_Realloc(self->elements, newSize * sizeof(float)),
         .count = self->count,
         .capacity = newSize
     };
@@ -25,14 +26,18 @@ static void DynamicArray__Resize(DynamicArray* self, size_t toFit) {
 
 DynamicArray DynamicArray_New(size_t capacity) {
     return (DynamicArray) {
-        .elements = LA_ALLOC(capacity * sizeof(float)),
+        .elements = GC_Alloc(capacity * sizeof(float)),
         .count = 0,
         .capacity = capacity
     };
 }
 
 void DynamicArray_Free(DynamicArray* self) {
-    LA_FREE(self->elements);
+    if (self == NULL) {
+        return;
+    }
+    
+    GC_Free(self->elements);
     *self = (DynamicArray) {
         .elements = NULL,
         .count = 0,

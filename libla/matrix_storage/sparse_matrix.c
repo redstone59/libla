@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 #include "../common.h"
+#include "../gc/gc.h"
 
 #define LA_SPARSE_ROW_VEC_INDEX 0
 #define LA_SPARSE_COL_VEC_INDEX 1
@@ -20,6 +21,8 @@ static void SparseMatrix__Destroy(Matrix *self) {
     DynamicArray_Free(rowVec);
     DynamicArray_Free(colVec);
     DynamicArray_Free(valVec);
+
+    GC_Free(self->cells.asArrays);
 }
 
 static float SparseMatrix_GetCell(Matrix *self, uint64_t row, uint64_t col) {
@@ -136,7 +139,7 @@ Matrix SparseMatrix_New(uint64_t rows, uint64_t cols, float **vecs, size_t nz, s
         DynamicArray_Append(&valArr, valVec[i]);
     }
 
-    DynamicArray *arrays = LA_ALLOC(3 * sizeof(DynamicArray));
+    DynamicArray *arrays = GC_Alloc(3 * sizeof(DynamicArray));
     arrays[LA_SPARSE_ROW_VEC_INDEX] = rowArr;
     arrays[LA_SPARSE_COL_VEC_INDEX] = colArr;
     arrays[LA_SPARSE_VAL_VEC_INDEX] = valArr;

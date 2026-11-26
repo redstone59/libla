@@ -15,6 +15,8 @@ AllocationArray AllocationArray_New(size_t capacity);
 void AllocationArray_Free(AllocationArray* self);
 
 GCAllocation AllocationArray_Get(AllocationArray* self, size_t index);
+GCAllocation *AllocationArray_GetReference(AllocationArray* self, size_t index);
+GCAllocation *AllocationArray_GetFromPointer(AllocationArray* self, void *ptr);
 void AllocationArray_Set(AllocationArray* self, size_t index, GCAllocation value);
 
 void AllocationArray_Append(AllocationArray* self, GCAllocation value);
