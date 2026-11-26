@@ -21,14 +21,17 @@ clean:
 
 main: main.c
 	@echo Building main...
-	make static
-	${CC} ${CFLAGS} -o main main.c -l:${OBJECT_NAME}.a -L./bin
+	@make static
+	${CC} ${CFLAGS} -o $@ $< -l:${OBJECT_NAME}.a -L./bin
 	@mv main ./bin
 
 # TODO: do some %.o: %.c shit to only compile the changed shit
+# See:
+# - https://www.twoistoomany.com/make-wildcard-patterns-aka-build-all-the-files-you-find/
+# - https://stackoverflow.com/questions/4036191/sources-from-subdirectories-in-makefile
 static: ${FILES}
 	@echo Compiling libla to static library...
-	${CC} ${CFLAGS} -c ${FILES}
+	${CC} ${CFLAGS} -c $^
 	@mv *.o ./build
 	ar rvs ${OBJECT_NAME}.a build/*
 	@mv ${OBJECT_NAME}.a ./bin
@@ -42,3 +45,9 @@ debug: ${FILES}
 	${CC} ${CFLAGS} -ggdb -fsanitize=address -o main main.c ${FILES}
 	@mv main ./bin
 	@mv ${OBJECT_NAME}.so ./bin
+
+test:
+	@echo TODO: test
+
+benchmark:
+	@echo TODO: benchmark
