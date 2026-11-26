@@ -55,5 +55,10 @@
     - [ ] Some way to test if this shit is good on other platforms
     - [ ] Build into stb-style single-header library(?)
     - [x] Logging system (i.e. warn floating point error, etc.)
-        - [ ] Write log to other file streams other than `stdout`
+        - [ ] Write log to other file streams other than `stderr`
         - [ ] Pull outside of `libla` directory
+    - [ ] Make `DynamicArray` type generic
+    - [ ] Modularity
+        - [ ] Pull `logging` outside of `libla`
+        - [ ] Pull `array` outside of `libla`
+        - [ ] Pull `gc` outside of `libla`
