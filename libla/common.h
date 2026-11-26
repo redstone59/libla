@@ -27,4 +27,6 @@
 
 #define LA_ABS(x) ((x) < 0 ? -(x) : (x))
 
+#include "logging.h"
+
 #endif // LA_COMMON_H_

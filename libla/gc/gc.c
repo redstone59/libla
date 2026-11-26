@@ -7,8 +7,6 @@
 #include "allocation.h"
 #include "allocation_array.h"
 
-#include "../logging.h"
-
 static AllocationArray allocs;
 static bool initialised = false;
 
