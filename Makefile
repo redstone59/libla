@@ -42,7 +42,7 @@ shared: ${FILES}
 	${CC} ${CFLAGS} -shared -o ${OBJECT_NAME}.so -fPIC ${FILES}
 
 debug: ${FILES}
-	${CC} ${CFLAGS} -ggdb -fsanitize=address -o main main.c ${FILES}
+	${CC} ${CFLAGS} -ggdb -fsanitize=address -o main main.c ${FILES} -DLA_LOG_THRESHOLD=LA_LOGLEVEL_DEBUG
 	@mv main ./bin
 	@mv ${OBJECT_NAME}.so ./bin
 

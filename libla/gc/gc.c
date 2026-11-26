@@ -7,21 +7,26 @@
 #include "allocation.h"
 #include "allocation_array.h"
 
+#include "../logging.h"
+
 static AllocationArray allocs;
 static bool initialised = false;
 
 void GC_Init(size_t capacity) {
     allocs = AllocationArray_New(capacity);
     initialised = true;
+    Libla_Log(LA_LOGLEVEL_DEBUG, "Initialised garbage collector!");
 }
 
 void GC_Destroy() {
+    Libla_Log(LA_LOGLEVEL_DEBUG, "Destroying garbage collector...");
     for (size_t i = 0; i < allocs.count; i++) {
         GCAllocation alloc = AllocationArray_Get(&allocs, i);
         LA_FREE(alloc.ptr);
         alloc.ptr = NULL;
     }
 
+    Libla_Log(LA_LOGLEVEL_DEBUG, "Garbage collector destroyed! Freed %zu objects.", allocs.count);
     AllocationArray_Free(&allocs);
     initialised = false;
 }
@@ -75,23 +80,22 @@ void GC_MakePermanent(void *ptr) {
 }
 
 void GC_Sweep() {
+    Libla_Log(LA_LOGLEVEL_DEBUG, "Beginning garbage collector sweep...");
+    size_t freedObjects = 0;
     for (size_t i = 0; i < allocs.count; i++) {
         GCAllocation alloc = AllocationArray_Get(&allocs, i);
 
-        printf("Checking allocation %p... ", alloc.ptr);
-
         if ((alloc.flags & GC_UNDESTROYABLE) != 0) {
-            printf("OK (indestructible)\n");
             continue;
         }
 
         if ((alloc.flags & GC_MARK) != 0) {
-            printf("OK (marked)\n");
             continue;
         }
 
-        printf("freed (not marked).\n");
         AllocationArray_Remove(&allocs, alloc);
+        freedObjects++;
         LA_FREE(alloc.ptr);
     }
+    Libla_Log(LA_LOGLEVEL_DEBUG, "Freed %zu objects on sweep", freedObjects);
 }

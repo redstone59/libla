@@ -42,6 +42,10 @@ static void PrintLevel(LiblaLogLevel level) {
 }
 
 void Libla_LogRaw(LiblaLogLevel level, char* message) {
+    if (level < LA_LOG_THRESHOLD) {
+        return;
+    }
+
     PrintTime();
     printf(" ");
     PrintLevel(level);
