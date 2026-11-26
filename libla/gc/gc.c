@@ -14,10 +14,8 @@ void GC_Init(size_t capacity) {
 }
 
 void GC_Destroy() {
-    printf("Destroying GC...\n");
     for (size_t i = 0; i < allocs.count; i++) {
         GCAllocation alloc = AllocationArray_Get(&allocs, i);
-        printf("Freeing allocation %p\n", alloc.ptr);
         LA_FREE(alloc.ptr);
         alloc.ptr = NULL;
     }
@@ -33,7 +31,6 @@ void *GC_Alloc(size_t size) {
     };
 
     AllocationArray_Append(&allocs, new);
-    AllocationArray_Print(&allocs, "%p");
 
     return new.ptr;
 }
