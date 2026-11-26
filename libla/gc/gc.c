@@ -88,6 +88,7 @@ void GC_Sweep() {
         }
 
         if ((alloc.flags & GC_MARK) != 0) {
+            alloc.flags &= ~GC_MARK;
             continue;
         }
 
