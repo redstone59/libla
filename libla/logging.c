@@ -13,7 +13,6 @@ static const char *logLevelStrings[LA_LOGLEVEL_COUNT] = {
     "INFO",
     "WARN",
     "ERROR",
-    ""
 };
 
 static const char *logLevelColours[LA_LOGLEVEL_COUNT] = {
@@ -21,7 +20,6 @@ static const char *logLevelColours[LA_LOGLEVEL_COUNT] = {
     ASCII_ESC("1;37"), // White
     ASCII_ESC("1;33"), // Yellow
     ASCII_ESC("1;31"), // Red
-    ""
 };
 
 static void PrintTime() {
@@ -30,11 +28,11 @@ static void PrintTime() {
 
     char buffer[256];
     strftime(buffer, sizeof(buffer), "%F %T", t);
-    printf("%s%s%s", ASCII_ESC("2"), buffer, ASCII_RESET);
+    fprintf(stderr, "%s%s%s", ASCII_ESC("2"), buffer, ASCII_RESET);
 }
 
 static void PrintLevel(LiblaLogLevel level) {
-    printf(
+    fprintf(stderr, 
         "%s%s%s", 
         logLevelColours[level], logLevelStrings[level], 
         ASCII_RESET
@@ -47,9 +45,9 @@ void Libla_LogRaw(LiblaLogLevel level, char* message) {
     }
 
     PrintTime();
-    printf(" ");
+    fprintf(stderr, " ");
     PrintLevel(level);
-    printf(": ");
-    printf(message);
-    printf("\n");
+    fprintf(stderr, ": ");
+    fprintf(stderr, message);
+    fprintf(stderr, "\n");
 }
