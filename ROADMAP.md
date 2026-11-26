@@ -15,7 +15,7 @@
 
 - **Memory**
     - [x] Ability to decouple from `libc` memory functions
-    - [ ] Use of arenas or a garbage collector to prevent leaks
+    - [x] Use of arenas or a garbage collector to prevent leaks
 
 - **Matrix operations**
     - [x] Basic matrix-matrix arithmetic
