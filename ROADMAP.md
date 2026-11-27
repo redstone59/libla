@@ -1,6 +1,6 @@
 # Roadmap for `libla`
 
-*Last updated: 26/11/26*
+*Last updated: 27/11/26*
 
 - **Data**
     - [ ] More comprehensive matrix storage
