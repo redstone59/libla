@@ -15,6 +15,8 @@
 typedef struct Range {
     size_t start;
     size_t end;
+    // int step
+    // TODO: range step (0:2:10 => 0, 2, 4, 6, 8, 10) etc. etc.
 } Range;
 
 #endif // LA_RANGE_H_

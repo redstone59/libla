@@ -62,3 +62,5 @@
         - [ ] Pull `logging` outside of `libla`
         - [ ] Pull `array` outside of `libla`
         - [ ] Pull `gc` outside of `libla`
+    - [ ] Allow ranges to be backwards
+    - [ ] Allow ranges to have arbitrary step size
