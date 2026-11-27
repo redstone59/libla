@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 
 #include "libla/gc/gc.h"
 
@@ -12,20 +13,23 @@ int main(int argc, char** argv) {
     GC_Init(256);
 
     Matrix a = Matrix_New(3, 4, (float[12]) {
-         2,  1, -1,   8, 
-        -3, -1,  2, -11,
-        -2,  1,  2,  -3,
+         1,  1,  1,  6,
+        -3, -1,  2,  1,
+         0,  4, -1,  5,
     });
     Matrix_Print(&a, "%.0f");
+    Matrix u = Matrix_NewEmpty(a.rows, a.cols);
+    memcpy(u.cells.asFloatVec, a.cells.asFloatVec, a.count * sizeof(float));
 
-    Matrix snippet = Matrix_GetRange(&a, RANGE(1, 2), RANGE(1, 3));
-    Matrix_Print(&snippet, "%.0f");
+    GaussianElimination(&u);
+    Matrix_Print(&u, "%.2f");
 
-    GaussianElimination(&a);
-    Matrix_Print(&a, "%.0f");
+    Matrix x = BackwardSubstitutionAugmented(u, 1);
+    Matrix_Print(&x, "%.2f");
 
-    Matrix_SetRange(&a, RANGE(1, 2), RANGE(1, 3), Matrix_MultiplyScalar(snippet, 2));
-    Matrix_Print(&a, "%.0f");
+    Matrix solve = Matrix_Multiply(Matrix_GetRange(&a, RANGE_EXCLUSIVE(0, a.rows), RANGE_EXCLUSIVE(0, a.rows)), x);
+    Matrix_Print(&solve, "%.2f");
+    
     return 0;
     float row[8] = {  0,  0,  1,  1,  2,  2,  2,  3 };
     float col[8] = {  0,  1,  1,  3,  2,  3,  4,  5 };
@@ -37,27 +41,6 @@ int main(int argc, char** argv) {
     
     GaussianElimination(&s);
     Matrix_Print(&s, "%.0f");
-    
-    Matrix u = Matrix_New(3, 3, (float[9]) {
-        1, 1, 1,
-        0, 1, 1,
-        0, 0, 1
-    });
-    Matrix b = Matrix_New(3, 1, (float[3]) {
-        6,
-        3,
-        1
-    });
-    Matrix_Print(&u, "%.0f");
-    Matrix_Print(&b, "%.0f");
-    Matrix ub = Matrix_Augment(&u, &b);
-    Matrix_Print(&ub, "%.0f");
-    
-    Matrix x = BackwardSubstitution(&u, &b);
-    Matrix_Print(&x, "%.2f");
-    
-    Matrix bReconstructed = Matrix_Multiply(u, x);
-    Matrix_Print(&bReconstructed, "%.2f");
     
     Matrix_Destroy(&s);
 
