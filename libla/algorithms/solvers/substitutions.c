@@ -24,7 +24,7 @@ Matrix ForwardSubstitution(Matrix L, Matrix b) {
 Matrix ForwardSubstitutionAugmented(Matrix Lb, size_t numVectors) {
     return ForwardSubstitution(
         Matrix_GetRange(&Lb, RANGE_EXCLUSIVE(0, Lb.rows), RANGE_EXCLUSIVE(0, Lb.cols - numVectors)),
-        Matrix_GetRange(&Lb, RANGE_EXCLUSIVE(0, Lb.rows), RANGE_EXCLUSIVE(numVectors, Lb.cols))
+        Matrix_GetRange(&Lb, RANGE_EXCLUSIVE(0, Lb.rows), RANGE_EXCLUSIVE(Lb.cols - numVectors, Lb.cols))
     );
 }
 
@@ -50,11 +50,8 @@ Matrix BackwardSubstitution(Matrix U, Matrix b) {
 }
 
 Matrix BackwardSubstitutionAugmented(Matrix Ub, size_t numVectors) {
-    Matrix U = Matrix_GetRange(&Ub, RANGE_EXCLUSIVE(0, Ub.rows), RANGE_EXCLUSIVE(0, Ub.cols - numVectors));
-    Matrix b = Matrix_GetRange(&Ub, RANGE_EXCLUSIVE(0, Ub.rows), RANGE_EXCLUSIVE(Ub.cols - numVectors, Ub.cols));
-    Matrix_Print(&U, "%.2f");
-    Matrix_Print(&b, "%.2f");
     return BackwardSubstitution(
-        U, b
+        Matrix_GetRange(&Ub, RANGE_EXCLUSIVE(0, Ub.rows), RANGE_EXCLUSIVE(0, Ub.cols - numVectors)),
+        Matrix_GetRange(&Ub, RANGE_EXCLUSIVE(0, Ub.rows), RANGE_EXCLUSIVE(Ub.cols - numVectors, Ub.cols))
     );
 }
