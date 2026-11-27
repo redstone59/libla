@@ -7,13 +7,13 @@
 
 #include "matrix_storage/full_matrix.h"
 
-Matrix Matrix_New(uint64_t rows, uint64_t cols, float* cells) {
+Matrix Matrix_New(size_t rows, size_t cols, float* cells) {
     Matrix new = FullMatrix_New(rows, cols, cells);
     Matrix_Mark(&new);
     return new;
 }
 
-Matrix Matrix_NewEmpty(uint64_t rows, uint64_t cols) {
+Matrix Matrix_NewEmpty(size_t rows, size_t cols) {
     size_t toAllocate = rows * cols * sizeof(float);
     float *cells = GC_Alloc(toAllocate);
     memset(cells, 0, toAllocate);
@@ -34,6 +34,23 @@ void Matrix_Destroy(Matrix *self) {
     self->methods->Destroy(self);
 }
 
+// TODO: make speedier using `memcpy` or something else other than this double for loop
+Matrix Matrix_Copy(Matrix *toCopy) {
+    Matrix copied = Matrix_NewEmpty(toCopy->rows, toCopy->cols);
+    
+    for (size_t row = 0; row < toCopy->rows; row++) {
+        for (size_t col = 0; col < toCopy->cols; col++) {
+            Matrix_SetCell(
+                &copied,
+                row, col,
+                Matrix_GetCell(toCopy, row, col)
+            );
+        }
+    }
+
+    return copied;
+}
+
 void Matrix_MarkFloatVec(Matrix *self) {
     GC_Mark(self->cells.asFloatVec);
 }
@@ -47,14 +64,14 @@ void Matrix_Mark(Matrix *self) {
     self->methods->Mark(self);
 }
 
-float Matrix_GetAtIndex(Matrix *self, uint64_t index) {
+float Matrix_GetAtIndex(Matrix *self, size_t index) {
     panic_if(index < 0 || index >= self->rows * self->cols, "Attempted to index outside the bounds of the matrix.");
     panic_if(self->methods->GetAtIndex == NULL, "`Matrix_GetAtIndex()` not defined in matrix vtable!");
 
     return self->methods->GetAtIndex(self, index);
 }
 
-float Matrix_GetCell(Matrix *self, uint64_t row, uint64_t col) {
+float Matrix_GetCell(Matrix *self, size_t row, size_t col) {
     panic_if(self->cells.asArrays == NULL, "Matrix has not been initialised!");
     panic_if(row < 0 || row >= self->rows, "Attempted to index row outside of matrix bounds");
     panic_if(col < 0 || col >= self->cols, "Attempted to index column outside of matrix bounds");
@@ -63,14 +80,14 @@ float Matrix_GetCell(Matrix *self, uint64_t row, uint64_t col) {
     return self->methods->GetCell(self, row, col);
 }
 
-void Matrix_SetIndex(Matrix *self, uint64_t index, float value) {
+void Matrix_SetIndex(Matrix *self, size_t index, float value) {
     panic_if(index < 0 || index >= self->rows * self->cols, "Attempted to index outside the bounds of the matrix.");
     panic_if(self->methods->SetIndex == NULL, "`Matrix_SetIndex()` not defined in matrix vtable!");
 
     self->methods->SetIndex(self, index, value);
 }
 
-void Matrix_SetCell(Matrix *self, uint64_t row, uint64_t col, float value) {
+void Matrix_SetCell(Matrix *self, size_t row, size_t col, float value) {
     panic_if(self->cells.asArrays == NULL, "Matrix has not been initialised!");
     panic_if(row < 0 || row >= self->rows, "Attempted to index row outside of matrix bounds");
     panic_if(col < 0 || col >= self->cols, "Attempted to index column outside of matrix bounds");
@@ -79,19 +96,19 @@ void Matrix_SetCell(Matrix *self, uint64_t row, uint64_t col, float value) {
     self->methods->SetCell(self, row, col, value);
 }
 
-Matrix Matrix_GetRow(Matrix *self, uint64_t row) {
+Matrix Matrix_GetRow(Matrix *self, size_t row) {
     return Matrix_GetRange(self, RANGE_SINGULAR(row), RANGE_EXCLUSIVE(0, self->cols));
 }
 
-Matrix Matrix_GetCol(Matrix *self, uint64_t col) {
+Matrix Matrix_GetCol(Matrix *self, size_t col) {
     return Matrix_GetRange(self, RANGE_EXCLUSIVE(0, self->rows), RANGE_SINGULAR(col));
 }
 
-void Matrix_SetRow(Matrix *self, uint64_t row, Matrix values) {
+void Matrix_SetRow(Matrix *self, size_t row, Matrix values) {
     not_implemented;
 }
 
-void Matrix_SetCol(Matrix *self, uint64_t col, Matrix values) {
+void Matrix_SetCol(Matrix *self, size_t col, Matrix values) {
     not_implemented;
 }
 
@@ -126,7 +143,7 @@ void Matrix_SetRange(Matrix *self, Range rowRange, Range colRange, Matrix values
 }
 
 
-void Matrix_SwapRows(Matrix *self, uint64_t rowA, uint64_t rowB) {
+void Matrix_SwapRows(Matrix *self, size_t rowA, size_t rowB) {
     panic_if(rowA < 0 || rowA >= self->rows, "Attempted to index row outside of matrix bounds.");
     panic_if(rowB < 0 || rowB >= self->rows, "Attempted to index row outside of matrix bounds.");
     panic_if(self->methods->SwapRows == NULL, "`Matrix_SwapRows()` not defined in matrix vtable!");
@@ -138,7 +155,7 @@ void Matrix_SwapRows(Matrix *self, uint64_t rowA, uint64_t rowB) {
     self->methods->SwapRows(self, rowA, rowB);
 }
 
-void Matrix_MultiplyRow(Matrix *self, uint64_t row, float multiplier) {
+void Matrix_MultiplyRow(Matrix *self, size_t row, float multiplier) {
     panic_if(row < 0 || row >= self->rows, "Attempted to index row outside of matrix bounds.");
     
     for (size_t i = 0; i < self->cols; i++) {
@@ -150,7 +167,7 @@ void Matrix_MultiplyRow(Matrix *self, uint64_t row, float multiplier) {
     }
 }
 
-void Matrix_AddMultipleOfRow(Matrix *self, float multiplier, uint64_t rowA, uint64_t rowB) {
+void Matrix_AddMultipleOfRow(Matrix *self, float multiplier, size_t rowA, size_t rowB) {
     panic_if(rowA < 0 || rowA >= self->rows, "Attempted to index row outside of matrix bounds.");
     panic_if(rowB < 0 || rowB >= self->rows, "Attempted to index row outside of matrix bounds.");
 
@@ -192,7 +209,7 @@ Matrix Matrix_Augment(Matrix *left, Matrix *right) {
     return Matrix_New(rows, cols, elements);
 }
 
-uint64_t Matrix_CellToIndex(Matrix *self, uint64_t row, uint64_t col) {
+size_t Matrix_CellToIndex(Matrix *self, size_t row, size_t col) {
     return row * self->cols + col;
 }
 

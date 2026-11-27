@@ -18,8 +18,7 @@ int main(int argc, char** argv) {
          0,  4, -1,  5,
     });
     Matrix_Print(&a, "%.0f");
-    Matrix u = Matrix_NewEmpty(a.rows, a.cols);
-    memcpy(u.cells.asFloatVec, a.cells.asFloatVec, a.count * sizeof(float));
+    Matrix u = Matrix_Copy(&a);
 
     GaussianElimination(&u);
     Matrix_Print(&u, "%.2f");

@@ -24,19 +24,19 @@ typedef struct MatrixVTable {
     void (*Destroy)(Matrix *self);
     void (*Mark)(Matrix *self);
 
-    float (*GetAtIndex)(Matrix *self, uint64_t index);
-    float (*GetCell)(Matrix *self, uint64_t row, uint64_t col);
-    void (*SetIndex)(Matrix *self, uint64_t index, float value);
-    void (*SetCell)(Matrix *self, uint64_t row, uint64_t col, float value);
+    float (*GetAtIndex)(Matrix *self, size_t index);
+    float (*GetCell)(Matrix *self, size_t row, size_t col);
+    void (*SetIndex)(Matrix *self, size_t index, float value);
+    void (*SetCell)(Matrix *self, size_t row, size_t col, float value);
 
-    void (*SwapRows)(Matrix *self, uint64_t rowA, uint64_t rowB);
-    // void (*MultiplyRow)(Matrix *self, uint64_t row, float multiplier);
-    // void (*AddMultipleOfRow)(Matrix *self, float multiplier, uint64_t rowA, uint64_t rowB);
+    void (*SwapRows)(Matrix *self, size_t rowA, size_t rowB);
+    // void (*MultiplyRow)(Matrix *self, size_t row, float multiplier);
+    // void (*AddMultipleOfRow)(Matrix *self, float multiplier, size_t rowA, size_t rowB);
 } MatrixVTable;
 
 struct Matrix {
-    uint64_t rows;
-    uint64_t cols;
+    size_t rows;
+    size_t cols;
 
     size_t count;
 
@@ -60,7 +60,7 @@ struct Matrix {
  * 
  * @returns The `Matrix` according to provided parameters.
  */
-Matrix Matrix_New(uint64_t rows, uint64_t cols, float* cells);
+Matrix Matrix_New(size_t rows, size_t cols, float* cells);
 
 /**
  * Creates a new matrix with all cells set to zero.
@@ -70,7 +70,16 @@ Matrix Matrix_New(uint64_t rows, uint64_t cols, float* cells);
  * 
  * @returns The `Matrix` with the provided size. This matrix is allocated on the heap.
  */
-Matrix Matrix_NewEmpty(uint64_t rows, uint64_t cols);
+Matrix Matrix_NewEmpty(size_t rows, size_t cols);
+
+/**
+ * Creates a copy of a given matrix from reference.
+ * 
+ * @param toCopy The matrix to copy.
+ * 
+ * @returns The matrix, copied.
+ */
+Matrix Matrix_Copy(Matrix *toCopy);
 
 void Matrix_DestroyFloatVec(Matrix *self);
 void Matrix_DestroyArray(Matrix *self);
@@ -92,15 +101,15 @@ void Matrix_MarkArray(Matrix *self);
  */
 void Matrix_Mark(Matrix *self);
 
-float Matrix_GetAtIndex(Matrix *self, uint64_t index);
-float Matrix_GetCell(Matrix *self, uint64_t row, uint64_t col);
-void Matrix_SetIndex(Matrix *self, uint64_t index, float value);
-void Matrix_SetCell(Matrix *self, uint64_t row, uint64_t col, float value);
+float Matrix_GetAtIndex(Matrix *self, size_t index);
+float Matrix_GetCell(Matrix *self, size_t row, size_t col);
+void Matrix_SetIndex(Matrix *self, size_t index, float value);
+void Matrix_SetCell(Matrix *self, size_t row, size_t col, float value);
 
-Matrix Matrix_GetRow(Matrix *self, uint64_t row);
-Matrix Matrix_GetCol(Matrix *self, uint64_t col);
-void Matrix_SetRow(Matrix *self, uint64_t row, Matrix values);
-void Matrix_SetCol(Matrix *self, uint64_t col, Matrix values);
+Matrix Matrix_GetRow(Matrix *self, size_t row);
+Matrix Matrix_GetCol(Matrix *self, size_t col);
+void Matrix_SetRow(Matrix *self, size_t row, Matrix values);
+void Matrix_SetCol(Matrix *self, size_t col, Matrix values);
 
 Matrix Matrix_GetRange(Matrix *self, Range rowRange, Range colRange);
 void Matrix_SetRange(Matrix *self, Range rowRange, Range colRange, Matrix values);
@@ -112,9 +121,9 @@ void Matrix_SetRange(Matrix *self, Range rowRange, Range colRange, Matrix values
  * @param rowA The first row to swap.
  * @param rowB The second row to swap.
  */
-void Matrix_SwapRows(Matrix *self, uint64_t rowA, uint64_t rowB);
+void Matrix_SwapRows(Matrix *self, size_t rowA, size_t rowB);
 
-// void Matrix_SwapCols(Matrix *self, uint64_t colA, uint64_t colB);
+// void Matrix_SwapCols(Matrix *self, size_t colA, size_t colB);
 /**
  * Multiplies all cells in a row by a scalar in place.
  * 
@@ -122,7 +131,7 @@ void Matrix_SwapRows(Matrix *self, uint64_t rowA, uint64_t rowB);
  * @param row The row to multiply
  * @param multiplier The scalar to multiply the row by.
  */
-void Matrix_MultiplyRow(Matrix *self, uint64_t row, float multiplier);
+void Matrix_MultiplyRow(Matrix *self, size_t row, float multiplier);
 
 /**
  * Adds a multiple of a row in place such that `rowB` = `rowB` + `multiplier` * `rowA` .
@@ -134,7 +143,7 @@ void Matrix_MultiplyRow(Matrix *self, uint64_t row, float multiplier);
  * @param rowA The row to add to `rowB`.
  * @param rowB The row that will be summed with `rowA * multiplier`.
  */
-void Matrix_AddMultipleOfRow(Matrix *self, float multiplier, uint64_t rowA, uint64_t rowB);
+void Matrix_AddMultipleOfRow(Matrix *self, float multiplier, size_t rowA, size_t rowB);
 
 /**
  * Augments two matrices into one.
@@ -147,7 +156,7 @@ void Matrix_AddMultipleOfRow(Matrix *self, float multiplier, uint64_t rowA, uint
 Matrix Matrix_Augment(Matrix *left, Matrix *right);
 
 // TODO: make this not assume full storage matrix only
-uint64_t Matrix_CellToIndex(Matrix *self, uint64_t row, uint64_t col);
+size_t Matrix_CellToIndex(Matrix *self, size_t row, size_t col);
 
 /**
  * Prints a matrix.
