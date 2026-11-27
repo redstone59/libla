@@ -3,8 +3,15 @@
 
 #include <stdio.h>
 
-#ifndef LA_LOG_THRESHOLD
-#   define LA_LOG_THRESHOLD LA_LOGLEVEL_ERR
+#ifdef LA_LOG_EVERYTHING
+#   ifdef LA_LOG_THRESHOLD
+#       undef LA_LOG_THRESHOLD
+#   endif
+#   define LA_LOG_THRESHOLD LA_LOGLEVEL_VERBOSE
+#else
+#   ifndef LA_LOG_THRESHOLD
+#       define LA_LOG_THRESHOLD LA_LOGLEVEL_ERR
+#   endif
 #endif
 
 typedef enum LiblaLogLevel {

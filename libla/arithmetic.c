@@ -13,7 +13,9 @@ Matrix Matrix_Add(Matrix a, Matrix b) {
         elements[i] = Matrix_GetAtIndex(&a, i) + Matrix_GetAtIndex(&b, i);
     }
 
-    return Matrix_New(a.rows, a.cols, elements);
+    Matrix sum = Matrix_New(a.rows, a.cols, elements);
+    Matrix_Mark(&sum);
+    return sum;
 }
 
 Matrix Matrix_Sub(Matrix a, Matrix b) {
@@ -45,7 +47,9 @@ Matrix Matrix_Multiply(Matrix a, Matrix b) {
         }
     }
 
-    return Matrix_New(a.rows, b.cols, elements);
+    Matrix product = Matrix_New(a.rows, b.cols, elements);
+    Matrix_Mark(&product);
+    return product;
 }
 
 Matrix Matrix_AddScalar(Matrix a, float scalar) {
@@ -65,7 +69,7 @@ Matrix Matrix_MultiplyScalar(Matrix a, float scalar) {
         elements[i] = Matrix_GetAtIndex(&a, i) * scalar;
     }
 
-    // Return same type of matrix back instead of full storage matrix.
+    // TODO: Return same type of matrix back instead of full storage matrix.
     return Matrix_New(a.rows, a.cols, elements);
 }
 
@@ -100,5 +104,6 @@ Matrix Matrix_Transpose(Matrix a) {
         }
     }
 
+    Matrix_Mark(&transposed);
     return transposed;
 }

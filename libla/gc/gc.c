@@ -36,6 +36,7 @@ void *GC_Alloc(size_t size) {
     };
 
     AllocationArray_Append(&allocs, new);
+    Libla_Log(LA_LOGLEVEL_VERBOSE, "Allocated %zu bytes at %p", size, new.ptr);
 
     return new.ptr;
 }
@@ -43,6 +44,7 @@ void *GC_Alloc(size_t size) {
 void GC_Free(void *ptr) {
     GCAllocation* alloc = AllocationArray_GetFromPointer(&allocs, ptr);
     if (alloc == NULL) {
+        Libla_Log(LA_LOGLEVEL_ERR, "Failed to get allocation %p (%p)", ptr, alloc);
         return;
     }
 
@@ -53,6 +55,7 @@ void GC_Free(void *ptr) {
 void *GC_Realloc(void *ptr, size_t size) {
     GCAllocation* alloc = AllocationArray_GetFromPointer(&allocs, ptr);
     if (alloc == NULL) {
+        Libla_Log(LA_LOGLEVEL_ERR, "Failed to get allocation %p (%p)", ptr, alloc);
         return NULL;
     }
 
@@ -62,8 +65,10 @@ void *GC_Realloc(void *ptr, size_t size) {
 void GC_Mark(void *ptr) {
     GCAllocation* alloc = AllocationArray_GetFromPointer(&allocs, ptr);
     if (alloc == NULL) {
+        Libla_Log(LA_LOGLEVEL_ERR, "Failed to get allocation %p (%p)", ptr, alloc);
         return;
     }
+    Libla_Log(LA_LOGLEVEL_VERBOSE, "Allocation %p marked", alloc->ptr);
 
     alloc->flags |= GC_MARK;
 }
@@ -75,6 +80,8 @@ void GC_MakePermanent(void *ptr) {
     }
 
     alloc->flags |= GC_UNDESTROYABLE;
+    // If it's undestroyable, then its useless to check them on sweep.
+    AllocationArray_Remove(&allocs, *alloc);
 }
 
 void GC_Sweep() {
@@ -84,16 +91,18 @@ void GC_Sweep() {
         GCAllocation alloc = AllocationArray_Get(&allocs, i);
 
         if ((alloc.flags & GC_UNDESTROYABLE) != 0) {
+            // Libla_Log(LA_LOGLEVEL_VERBOSE, "Allocation %p kept (indestructible)", alloc.ptr);
             continue;
         }
 
         if ((alloc.flags & GC_MARK) != 0) {
             alloc.flags &= ~GC_MARK;
+            // Libla_Log(LA_LOGLEVEL_VERBOSE, "Allocation %p kept (marked) %d", alloc.ptr, alloc.flags & GC_MARK);
             continue;
         }
 
-        AllocationArray_Remove(&allocs, alloc);
         freedObjects++;
+        Libla_Log(LA_LOGLEVEL_VERBOSE, "Allocation %p freed on sweep", alloc.ptr);
         LA_FREE(alloc.ptr);
     }
     Libla_Log(LA_LOGLEVEL_DEBUG, "Freed %zu objects on sweep", freedObjects);

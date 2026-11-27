@@ -122,7 +122,7 @@ void AllocationArray_Remove(AllocationArray* self, GCAllocation value) {
 void AllocationArray_Print(AllocationArray* self, const char* specifier) {
     printf("[ ");
     for (size_t i = 0; i < self->count; i++) {
-        printf(specifier, AllocationArray_Get(self, i));
+        printf(specifier, AllocationArray_Get(self, i).ptr);
         if (i != self->count - 1) {
             printf(DA_SEPARATOR " ");
         }

@@ -21,6 +21,7 @@ typedef enum MatrixKind {
 
 typedef struct MatrixVTable {
     void (*Destroy)(Matrix *self);
+    void (*Mark)(Matrix *self);
 
     float (*GetAtIndex)(Matrix *self, uint64_t index);
     float (*GetCell)(Matrix *self, uint64_t row, uint64_t col);
@@ -79,6 +80,16 @@ void Matrix_DestroyArray(Matrix *self);
  * @param self A pointer to the matrix to free.
  */
 void Matrix_Destroy(Matrix *self); // TODO: properly implement
+
+void Matrix_MarkFloatVec(Matrix *self);
+void Matrix_MarkArray(Matrix *self);
+
+/**
+ * Marks a matrix so that it doesn't get cleaned by the garbage collector.
+ * 
+ * @param self A pointer to the matrix to preserve.
+ */
+void Matrix_Mark(Matrix *self);
 
 float Matrix_GetAtIndex(Matrix *self, uint64_t index);
 float Matrix_GetCell(Matrix *self, uint64_t row, uint64_t col);

@@ -5,6 +5,7 @@
 #include "libla/matrix.h"
 #include "libla/arithmetic.h"
 #include "libla/matrix_types.h"
+#include "libla/logging.h"
 
 #include "libla/algorithms/algorithms.h"
 
@@ -51,9 +52,9 @@ int main(int argc, char** argv) {
     Matrix bReconstructed = Matrix_Multiply(u, x);
     Matrix_Print(&bReconstructed, "%.2f");
     
-    GC_Sweep();
-    
     Matrix_Destroy(&s);
+
+    GC_Sweep();
 
     Matrix insuranceP = Matrix_New(5, 5, (float[25]) {
          1 / 4.f,  3 / 4.f,        0,       0,       0,
@@ -62,10 +63,14 @@ int main(int argc, char** argv) {
         1 / 16.f,        0, 3 / 16.f,       0, 3 / 4.f,
         1 / 16.f,        0, 3 / 16.f,       0, 3 / 4.f
     });
+    GC_MakePermanent(&insuranceP.cells);
 
+    
     Matrix pn = insuranceP;
-    for (int i = 0; i < 200; i++) {
+    
+    for (int i = 0; i < 2500; i++) {
         pn = Matrix_Multiply(pn, insuranceP);
+        if (i % 10 == 0) GC_Sweep();
     }
     Matrix_Print(&pn, "%.4f");
     GC_Sweep();

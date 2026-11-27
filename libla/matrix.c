@@ -8,7 +8,9 @@
 #include "matrix_storage/full_matrix.h"
 
 Matrix Matrix_New(uint64_t rows, uint64_t cols, float* cells) {
-    return FullMatrix_New(rows, cols, cells);
+    Matrix new = FullMatrix_New(rows, cols, cells);
+    Matrix_Mark(&new);
+    return new;
 }
 
 Matrix Matrix_NewEmpty(uint64_t rows, uint64_t cols) {
@@ -27,9 +29,22 @@ void Matrix_DestroyArray(Matrix *self) {
     DynamicArray_Free(&self->cells.asVec);
 }
 
-void Matrix_Destroy(Matrix* self) {
+void Matrix_Destroy(Matrix *self) {
     panic_if(self->methods->Destroy == NULL, "`Matrix_Destroy()` not defined in matrix vtable!");
     self->methods->Destroy(self);
+}
+
+void Matrix_MarkFloatVec(Matrix *self) {
+    GC_Mark(self->cells.asFloatVec);
+}
+
+void Matrix_MarkArray(Matrix *self) {
+    GC_Mark(&self->cells.asVec.elements);    
+}
+
+void Matrix_Mark(Matrix *self) {
+    panic_if(self->methods->Mark == NULL, "`Matrix_Mark()` not defined in matrix vtable!");
+    self->methods->Mark(self);
 }
 
 float Matrix_GetAtIndex(Matrix *self, uint64_t index) {
@@ -133,7 +148,7 @@ void Matrix_AddMultipleOfRow(Matrix *self, float multiplier, uint64_t rowA, uint
     }
 }
 
-uint64_t Matrix_CellToIndex(Matrix* self, uint64_t row, uint64_t col) {
+uint64_t Matrix_CellToIndex(Matrix *self, uint64_t row, uint64_t col) {
     return row * self->cols + col;
 }
 
@@ -144,7 +159,7 @@ uint64_t Matrix_CellToIndex(Matrix* self, uint64_t row, uint64_t col) {
 #define LA_FANCY_PRINT_BOTTOMRIGHT "┘"
 #define LA_FANCY_PRINT_PIPE "│"
 
-void Matrix_Print(Matrix* self, const char* specifier) {
+void Matrix_Print(Matrix *self, const char *specifier) {
     // Determine longest string inside one cell.
     int longestInColumn[self->cols];
     memset(longestInColumn, 0, sizeof(longestInColumn));

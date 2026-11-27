@@ -25,6 +25,17 @@ static void SparseMatrix__Destroy(Matrix *self) {
     GC_Free(self->cells.asArrays);
 }
 
+static void SparseMatrix__Mark(Matrix *self) {
+    DynamicArray *rowVec, *colVec, *valVec;
+    SparseMatrix__GetVecs(self, &rowVec, &colVec, &valVec);
+
+    GC_Mark(&rowVec->elements);
+    GC_Mark(&colVec->elements);
+    GC_Mark(&valVec->elements);
+
+    GC_Mark(self->cells.asArrays);
+}
+
 static float SparseMatrix_GetCell(Matrix *self, uint64_t row, uint64_t col) {
     DynamicArray *rowVec, *colVec, *valVec;
     SparseMatrix__GetVecs(self, &rowVec, &colVec, &valVec);
@@ -113,6 +124,7 @@ static void SparseMatrix_SwapRows(Matrix *self, uint64_t rowA, uint64_t rowB) {
 
 static MatrixVTable sparseMethods = {
     .Destroy = SparseMatrix__Destroy,
+    .Mark = SparseMatrix__Mark,
 
     .GetAtIndex = SparseMatrix_GetAtIndex,
     .GetCell = SparseMatrix_GetCell,
