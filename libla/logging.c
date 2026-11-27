@@ -9,6 +9,7 @@
 #define ASCII_RESET ASCII_ESC("0")
 
 static const char *logLevelStrings[LA_LOGLEVEL_COUNT] = {
+    "DEBUG" ASCII_RESET ASCII_ESC("36") "++",
     "DEBUG",
     "INFO",
     "WARN",
@@ -16,10 +17,11 @@ static const char *logLevelStrings[LA_LOGLEVEL_COUNT] = {
 };
 
 static const char *logLevelColours[LA_LOGLEVEL_COUNT] = {
-    ASCII_ESC("1;36"), // Cyan
-    ASCII_ESC("1;37"), // White
-    ASCII_ESC("1;33"), // Yellow
-    ASCII_ESC("1;31"), // Red
+    ASCII_ESC("1;36"), // Bold, Cyan
+    ASCII_ESC("1;36"), // Bold, Cyan
+    ASCII_ESC("1;37"), // Bold, White
+    ASCII_ESC("1;33"), // Bold, Yellow
+    ASCII_ESC("1;31"), // Bold, Red
 };
 
 static void PrintTime() {

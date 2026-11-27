@@ -8,6 +8,7 @@
 #endif
 
 typedef enum LiblaLogLevel {
+    LA_LOGLEVEL_VERBOSE,
     LA_LOGLEVEL_DEBUG,
     LA_LOGLEVEL_INFO,
     LA_LOGLEVEL_WARN,
