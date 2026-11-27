@@ -18,9 +18,15 @@ int main(int argc, char** argv) {
     });
     Matrix_Print(&a, "%.0f");
 
+    Matrix snippet = Matrix_GetRange(&a, RANGE(1, 2), RANGE(1, 3));
+    Matrix_Print(&snippet, "%.0f");
+
     GaussianElimination(&a);
     Matrix_Print(&a, "%.0f");
-    
+
+    Matrix_SetRange(&a, RANGE(1, 2), RANGE(1, 3), Matrix_MultiplyScalar(snippet, 2));
+    Matrix_Print(&a, "%.0f");
+    return 0;
     float row[8] = {  0,  0,  1,  1,  2,  2,  2,  3 };
     float col[8] = {  0,  1,  1,  3,  2,  3,  4,  5 };
     float val[8] = { 10, 20, 30, 40, 50, 60, 70, 80 };
@@ -67,7 +73,7 @@ int main(int argc, char** argv) {
     GC_MakePermanent(&insuranceP.cells);
     
     Matrix pn = insuranceP;
-    
+
     for (int i = 0; i < 2500; i++) {
         pn = Matrix_Multiply(pn, insuranceP);
         if (i % 10 == 0) GC_Sweep();

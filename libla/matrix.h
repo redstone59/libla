@@ -5,6 +5,7 @@
 #include <stdint.h>
 
 #include "array/dynamic_array.h"
+#include "range.h"
 
 typedef struct Matrix Matrix;
 
@@ -100,6 +101,9 @@ Matrix Matrix_GetRow(Matrix *self, uint64_t row);
 Matrix Matrix_GetCol(Matrix *self, uint64_t col);
 void Matrix_SetRow(Matrix *self, uint64_t row, Matrix values);
 void Matrix_SetCol(Matrix *self, uint64_t col, Matrix values);
+
+Matrix Matrix_GetRange(Matrix *self, Range rowRange, Range colRange);
+void Matrix_SetRange(Matrix *self, Range rowRange, Range colRange, Matrix values);
 
 /**
  * Swaps two rows in a matrix in place.

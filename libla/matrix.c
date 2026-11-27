@@ -80,23 +80,11 @@ void Matrix_SetCell(Matrix *self, uint64_t row, uint64_t col, float value) {
 }
 
 Matrix Matrix_GetRow(Matrix *self, uint64_t row) {
-    float *cells = GC_Alloc(self->cols * sizeof(float));
-    
-    for (int i = 0; i < self->cols; i++) {
-        cells[i] = Matrix_GetCell(self, i, row);
-    }
-
-    return Matrix_New(1, self->cols, cells);
+    return Matrix_GetRange(self, RANGE_SINGULAR(row), RANGE_EXCLUSIVE(0, self->cols));
 }
 
 Matrix Matrix_GetCol(Matrix *self, uint64_t col) {
-    float *cells = GC_Alloc(self->rows * sizeof(float));
-    
-    for (int i = 0; i < self->rows; i++) {
-        cells[i] = Matrix_GetCell(self, col, i);
-    }
-
-    return Matrix_New(self->rows, 1, cells);
+    return Matrix_GetRange(self, RANGE_EXCLUSIVE(0, self->rows), RANGE_SINGULAR(col));
 }
 
 void Matrix_SetRow(Matrix *self, uint64_t row, Matrix values) {
@@ -106,6 +94,37 @@ void Matrix_SetRow(Matrix *self, uint64_t row, Matrix values) {
 void Matrix_SetCol(Matrix *self, uint64_t col, Matrix values) {
     not_implemented;
 }
+
+Matrix Matrix_GetRange(Matrix *self, Range rowRange, Range colRange) {
+    size_t rows = RANGE_LEN(rowRange);
+    size_t cols = RANGE_LEN(colRange);
+    float *elements = GC_Alloc(rows * cols * sizeof(float));
+
+    size_t index = 0;
+    for (EACH_IN_RANGE(size_t, row, rowRange)) {
+        for (EACH_IN_RANGE(size_t, col, colRange)) {
+            elements[index++] = Matrix_GetCell(self, row, col);
+        }
+    }
+
+    return Matrix_New(rows, cols, elements);
+}
+
+void Matrix_SetRange(Matrix *self, Range rowRange, Range colRange, Matrix values) {
+    panic_if(values.rows != RANGE_LEN(rowRange), "Attempted to set matrix range with mismatching row count.");
+    panic_if(values.cols != RANGE_LEN(colRange), "Attempted to set matrix range with mismatching column count.");
+    
+    for (EACH_IN_RANGE(size_t, row, rowRange)) {
+        for (EACH_IN_RANGE(size_t, col, colRange)) {
+            Matrix_SetCell(
+                self,
+                row, col,
+                Matrix_GetCell(&values, row - rowRange.start, col - colRange.start)
+            );
+        }
+    }
+}
+
 
 void Matrix_SwapRows(Matrix *self, uint64_t rowA, uint64_t rowB) {
     panic_if(rowA < 0 || rowA >= self->rows, "Attempted to index row outside of matrix bounds.");

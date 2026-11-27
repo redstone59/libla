@@ -25,8 +25,8 @@
     - [x] Elementary row operations
     - [ ] Check matrix properties
         - [ ] Cache matrix properties for speed
-    - [ ] Set row/column of matrix
-        - [ ] Set arbitrary range of cells
+    - [x] Get/Set row/column of matrix
+        - [x] Get/Set arbitrary range of cells
     - [ ] Norms
         - [ ] 1-norm (maximum absolute column sum)
         - [ ] 2-norm (largest singular value)
