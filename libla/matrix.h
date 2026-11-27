@@ -132,6 +132,16 @@ void Matrix_MultiplyRow(Matrix *self, uint64_t row, float multiplier);
  */
 void Matrix_AddMultipleOfRow(Matrix *self, float multiplier, uint64_t rowA, uint64_t rowB);
 
+/**
+ * Augments two matrices into one.
+ * 
+ * @param left The matrix to augment on the left.
+ * @param right The matrix to augment on the right.
+ * 
+ * @returns The two matrices augmented.
+ */
+Matrix Matrix_Augment(Matrix *left, Matrix *right);
+
 // TODO: make this not assume full storage matrix only
 uint64_t Matrix_CellToIndex(Matrix *self, uint64_t row, uint64_t col);
 

@@ -32,7 +32,7 @@
         - [ ] 2-norm (largest singular value)
         - [ ] infinity-norm (maximum absolute row sum)
         - [ ] Frobenius norm
-    - [ ] Matrix augmentation
+    - [x] Matrix augmentation
 
 - **Algorithms**
     - [x] Gaussian Elimination

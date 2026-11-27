@@ -148,6 +148,31 @@ void Matrix_AddMultipleOfRow(Matrix *self, float multiplier, uint64_t rowA, uint
     }
 }
 
+Matrix Matrix_Augment(Matrix *left, Matrix *right) {
+    panic_if(left->rows != right->rows, "Attempted to augment two matrices with different row counts");
+
+    size_t rows = left->rows;
+    size_t cols = left->cols + right->cols;
+    float *elements = GC_Alloc(rows * cols * sizeof(float));
+
+    size_t index = 0;
+    for (size_t row = 0; row < rows; row++) {
+        for (size_t col = 0; col < cols; col++) {
+            float cell;
+            if (col < left->rows) {
+                cell = Matrix_GetCell(left, row, col);
+            } else {
+                cell = Matrix_GetCell(right, row, col - left->cols);
+            }
+            
+            elements[index] = cell;
+            index++;
+        }
+    }
+
+    return Matrix_New(rows, cols, elements);
+}
+
 uint64_t Matrix_CellToIndex(Matrix *self, uint64_t row, uint64_t col) {
     return row * self->cols + col;
 }

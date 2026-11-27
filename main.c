@@ -5,7 +5,6 @@
 #include "libla/matrix.h"
 #include "libla/arithmetic.h"
 #include "libla/matrix_types.h"
-#include "libla/logging.h"
 
 #include "libla/algorithms/algorithms.h"
 
@@ -45,6 +44,8 @@ int main(int argc, char** argv) {
     });
     Matrix_Print(&u, "%.0f");
     Matrix_Print(&b, "%.0f");
+    Matrix ub = Matrix_Augment(&u, &b);
+    Matrix_Print(&ub, "%.0f");
     
     Matrix x = BackwardSubstitution(&u, &b);
     Matrix_Print(&x, "%.2f");
@@ -64,7 +65,6 @@ int main(int argc, char** argv) {
         1 / 16.f,        0, 3 / 16.f,       0, 3 / 4.f
     });
     GC_MakePermanent(&insuranceP.cells);
-
     
     Matrix pn = insuranceP;
     
